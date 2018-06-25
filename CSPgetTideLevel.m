@@ -1,6 +1,6 @@
 function tide = CSPgetTideLevel(epochtime,site)
 %
-%function out = CSPgetTideLevel(matlabtime,site)
+%function out = CSPgetTideLevel(epochtime,site)
 %
 %Function that gets the tide level for the relevant epoch (UNIX) time. Note
 %that the tide file is in the local default timezone, whereas the input is
