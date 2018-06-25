@@ -19,7 +19,7 @@ siteDB = CSPreadSiteDB(site);
 %Load relevant tide file
 load([tide_path filesep siteDB.tide.file])
 
-%First convert epoch time to matlab time in default timezone
+%First, convert epoch time to matlab time in default timezone
 matlabtimelocal = epoch2Matlab(epochtime)+siteDB.timezone.gmt_offset/24;
 
 %Interpolate tide from record
