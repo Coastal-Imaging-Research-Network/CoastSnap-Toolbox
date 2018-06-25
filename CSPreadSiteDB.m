@@ -63,8 +63,9 @@ out.tide.file = char(raw(I,2));
 %Get shoreline mapping settings
 I = find(strcmp(raw(:,1),'Transect file'));
 out.sl_settings.transect_file = char(raw(I,2));
-I = find(strcmp(raw(:,1),'CCD threshold'));
-out.sl_settings.CCDthresh = cell2mat(raw(I,2));
+%I = find(strcmp(raw(:,1),'CCD threshold')); %MDH 25/6/2018 CCD threshold
+%no longer needed
+%out.sl_settings.CCDthresh = cell2mat(raw(I,2));
 
 %Get GCPs
 I = find(strcmp(raw(:,1),'GCP name'));

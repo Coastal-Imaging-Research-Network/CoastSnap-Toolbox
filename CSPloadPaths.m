@@ -1,5 +1,6 @@
 %This file contains all the necessary path information for your local
-%CoastSnap database
+%CoastSnap database. It is called in almost all files in the CoastSnap
+%Toolbox
 %
 %Mitch Harley, June 2018
 
