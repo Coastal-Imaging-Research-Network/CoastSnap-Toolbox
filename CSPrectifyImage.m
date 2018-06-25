@@ -2,7 +2,8 @@ function CSPrectifyImage(site,gcp_list,filename)
 %function CSrectifyImage(site,gcp_list)
 %
 %CoastSnap function to rectify the CoastSnap image.
-
+%
+%Created by Mitch Harley
 
 close all
 clc
