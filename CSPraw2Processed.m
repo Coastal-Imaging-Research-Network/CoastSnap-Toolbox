@@ -22,18 +22,14 @@ imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS AM');
 
 %Convert to GMT time
 imtimesGMT = imtimes;
-Idefault= find(strcmp(txt(2:end,4),siteDB.timezone.name)); %AEDT = Australian Eastern Daylight Time
+Idefault= find(strcmp(txt(2:end,4),siteDB.timezone.name)); %e.g. AEDT = Australian Eastern Daylight Time
 imtimesGMT(Idefault) = imtimesGMT(Idefault)-siteDB.timezone.gmt_offset/24; %Subtract the offset in hours to convert to gmt time
-Ialternative = find(strcmp(txt(2:end,4),siteDB.timezone.alternative.name)); %AEDT = Australian Eastern Daylight Time
+Ialternative = find(strcmp(txt(2:end,4),siteDB.timezone.alternative.name)); %e.g. AEDT = Australian Eastern Daylight Time
 imtimesGMT(Ialternative) = imtimesGMT(Ialternative)-siteDB.timezone.alternative.gmt_offset/24; %Subtract the offset in hours to convert to default
 
 %Read through images found in Raw file
 imagedir = [image_path filesep site filesep 'Raw' filesep];
 images = dir([imagedir '*.jpg']);
-
-%%Load Astro tide
-%tidedir = strrep(dbfile,['Database' filesep 'CoastSnapDB.xlsx'],'Tide Data');
-%load(fullfile(tidedir,siteDB.tide.file))
 
 %Loop through images in Raw data directory
 for i = 1:length(images)
@@ -44,9 +40,9 @@ for i = 1:length(images)
     imtype = regexprep(txt{I,7},'[^\w'']','');
     gmt_time = imtimesGMT(I-1);
     epochtime = matlab2Epoch(gmt_time);
-    newname = CSPargusFilename(epochtime,site,-1,lower(imtype),user,'jpg')
-    %newname = [datestr(imtimes(I-1),'yyyymmddHHMM') '_' station '_' user  '_astrotide_' num2str(tide_level,'%0.2f') 'mAHD.jpg']; %Need to subtract one to the index for imtimes
+    newname = CSPargusFilename(epochtime,site,-1,lower(imtype),user,'jpg');
     year = datestr(gmt_time+siteDB.timezone.gmt_offset/24,'YYYY'); %Have subdirectory of years to not get too confusing
     newdir = fullfile(strrep(imagedir,'Raw','Processed'),year);
     movefile([imagedir images(i).name],[newdir filesep newname],'f');
 end
+disp('All raw files successfully moved to the processed folder')
