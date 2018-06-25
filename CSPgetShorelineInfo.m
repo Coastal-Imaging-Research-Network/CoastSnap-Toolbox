@@ -1,4 +1,4 @@
-function [epochtimes,tide_levels] = CSPgetShorelineInfo(site)
+function [epochtimes,filenames,tide_levels] = CSPgetShorelineInfo(site)
 %
 %[epochtimes,tide_levels] = CSPgetShorelineInfo(site)
 %
@@ -15,12 +15,15 @@ CSPloadPaths
 %mat files
 folders = dir(fullfile(shoreline_path,site));
 epochtimes = [];
+p = 1;
 for i = 1:length(folders)
     if folders(i).isdir&&length(folders(i).name)==4 %folder is most likely a year here if it has length 4
         files = dir([fullfile(shoreline_path,site,folders(i).name) filesep '*.mat']);
         for j = 1:length(files)
             out = CSPparseFilename(files(j).name);
             epochtimes = [epochtimes str2num(out.epochtime)];
+            filenames(p).name = files(j).name;
+            p = p+1;
         end
     end
 end
