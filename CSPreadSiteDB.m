@@ -3,7 +3,8 @@ function out = CSPreadSiteDB(site)
 %function out = CSPreadSiteDB(site)
 %
 %Function that reads the station metadata stored in the Excel Spreadsheet
-%'CoastSnapDB.xlsx' and stores it as a matlab structure.
+%'CoastSnapDB.xlsx' and stores it as a matlab structure. Refer to the file
+%CSPloadPaths for the location of the Database
 %
 %site = name of site you want to read (should be same as name of sheet in
 %Excel file)
