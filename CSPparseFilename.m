@@ -10,12 +10,13 @@ function out = CSPparseFilename(fname)
 
 C = strsplit(fname,'.');
 out.epochtime = C{1};
-out.day = C{2};
+out.dayname = C{2};
 out.year = C{6};
 out.month = C{3};
-out.hour = C{4}(1:2);
-out.min = C{4}(4:5);
-out.sec = C{4}(7:8);
+out.day = C{4}(1:2);
+out.hour = C{4}(4:5);
+out.min = C{4}(7:8);
+out.sec = C{4}(10:11);
 out.timezone = C{5};
 out.site = C{7};
 out.type = C{8};
