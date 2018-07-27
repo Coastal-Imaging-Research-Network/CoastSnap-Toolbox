@@ -185,7 +185,7 @@ if go==1
     CI = ci6DOF;
     
     MSE = mse;
-    RMSE = sqrt(MSE)
+    RMSE = sqrt(MSE);
     title(sprintf('RMSE = %.2f pixels', RMSE));
     
     % Save meta structure (if not already there)
@@ -271,7 +271,7 @@ if go==1
     end
     
     %Ask user whether they wan to map a shoreline based on this image
-    button = questdlg('Do you want to map a shoreline based on this rectified image?','Map a shoreline?','Yes','No','No')
+    button = questdlg('Do you want to map a shoreline based on this rectified image?','Map a shoreline?','Yes','No','No');
     switch button
         case 'Yes'
             close all
