@@ -26,6 +26,7 @@ if nargin == 0
         error('¡¡ No file selected !!')
     end
     type = 'CCD';
+    option = 'manual';
 elseif nargin == 1
     type = 'CCD';
     option = 'manual';
