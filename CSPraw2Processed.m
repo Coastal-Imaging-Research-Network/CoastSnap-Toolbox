@@ -13,12 +13,15 @@ CSPloadPaths
 
 %First find path of DB Excel file and read database
 siteDB = CSPreadSiteDB(site); %Read metadata
-CSPloadPaths
 dbfile = fullfile([DB_path filesep 'CoastSnapDB.xlsx']);
 [data,txt] = xlsread(dbfile,'database');
 
-%Read image times - make sure Excel format is as below
-imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS AM');
+%Read image times - make sure Excel format is as below 
+if isempty(strfind(txt{2,3},'PM'))||isempty(strfind(txt{2,3},'AM')) %if using AM/PM
+    imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS AM');
+else
+    imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS'); %if using 24 hour clock
+end
 
 %Convert to GMT time
 imtimesGMT = imtimes;
