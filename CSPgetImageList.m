@@ -1,6 +1,6 @@
-function [epochtimes,filenames,tide_levels] = CSPgetImageList(site,type)
+function [epochtimes,filenames,filepaths,tide_levels] = CSPgetImageList(site,type)
 %
-%[epochtimes,tide_levels] = CSPgetImageList(site,type)
+%[epochtimes,filenames,filepaths,tide_levels] = CSPgetImageList(site,type)
 %
 %Function that finds epoch times (in GMT) and associated tide levels of all
 %processed images in database for a particular site
@@ -28,6 +28,7 @@ for i = 1:length(folders)
             out = CSPparseFilename(files(j).name);
             epochtimes = [epochtimes str2num(out.epochtime)];
             filenames(p).name = files(j).name;
+            filepaths(p).name = fullfile(image_path,site,type,folders(i).name);
             p = p+1;
         end
     end
