@@ -1,6 +1,6 @@
-close all
-clear variables
-clc
+%close all
+%clear variables
+%clc
 
 
 %Input variables of interest
