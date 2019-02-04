@@ -50,13 +50,12 @@ for i = 1:length(images)
         image(II) %Display image for user
         axis image
         user = inputdlg(['What is the instagram username for this image uploaded on the ' datestr(fourKstogramdate,'dd/mm/yyyy HH:MM') '?']);
-        user = strrep(user,'_',''); user = strrep(user,'.',''); %Get rid of underscore or full stops if any exists
         close(imagefig)
         timezone = questdlg('Please select the appropriate time zone','Timezone selection',siteDB.timezone.name,siteDB.timezone.alternative.name,siteDB.timezone.name);
         timequality = questdlg('Please select the accuracy of the image time (1 = stated time, 2 = good upload time, 3 = poor upload time)','Image time accuracy',1,2,3,2);
         if timequality~=2 %If the user actually stated the time
-           newtime = inputdlg(['Please input the time as indicated by the user, or if quality=3 take a guess (format dd/mm/yyyy HH:MM)']);
-           fourKstogramdate = datenum(char(newtime),'dd/mm/yyyy HH:MM');
+            newtime = inputdlg('Please input the time as indicated by the user, or if quality=3 take a guess (format dd/mm/yyyy HH:MM)','New time',1,{datestr(fourKstogramdate,'dd/mm/yyyy HH:MM')});
+            fourKstogramdate = datenum(char(newtime),'dd/mm/yyyy HH:MM');
         end
         startcell = ['A' num2str(lastrow)];
         imtype = 'Snap'; %Assume it is a snap
@@ -68,16 +67,15 @@ for i = 1:length(images)
         elseif strcmp(timezone,siteDB.timezone.alternative.name);
             gmt_time = fourKstogramdate-siteDB.timezone.alternative.gmt_offset/24;
         end
-    else    
+    else
         I = find(strcmp(filename,txt(:,5)));
         user = regexprep(txt{I,2},'[^\w'']','');
-        user = strrep(user,'_',''); %Get rid of underscore if any exists
-        user = strrep(user,'.',''); %Get rid of full stop if any exists
         imtype = regexprep(txt{I,7},'[^\w'']','');
         gmt_time = imtimesGMT(I-1);
     end
     
     epochtime = matlab2Epoch(gmt_time);
+    user = strrep(user,'_',''); user = strrep(user,'.',''); %Get rid of underscore or full stops if any exists
     newname = CSPargusFilename(epochtime,site,-1,lower(imtype),char(user),'jpg');
     year = datestr(gmt_time+siteDB.timezone.gmt_offset/24,'YYYY'); %Have subdirectory of years to not get too confusing
     newdir = fullfile(strrep(imagedir,'Raw','Processed'),year);
