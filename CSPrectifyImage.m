@@ -59,7 +59,7 @@ if exist(fullfile(rect_path,rect_name),'file')
 end
 
 if go==1
-    I = imread([pname fname]); %Read image
+    I = imread(fullfile(pname,fname)); %Read image
     tide_level = CSPgetTideLevel(str2num(fileparts.epochtime),site);
     
     % Show image
