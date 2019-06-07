@@ -1,6 +1,6 @@
-function [epochtimes,filenames,tide_levels] = CSPgetShorelineList(site)
+function [epochtimes,filenames,filepaths,tide_levels] = CSPgetShorelineList(site)
 %
-%[epochtimes,tide_levels] = CSPgetShorelineList(site)
+%[epochtimes,filenames,filepaths,tide_levels] = CSPgetShorelineList(site)
 %
 %Function that finds epoch times (in GMT) and associated tide levels of all
 %shorelines saved in database for a particular site
@@ -23,6 +23,7 @@ for i = 1:length(folders)
             out = CSPparseFilename(files(j).name);
             epochtimes = [epochtimes str2num(out.epochtime)];
             filenames(p).name = files(j).name;
+            filepaths(p).name = fullfile(shoreline_path,site,folders(i).name);
             p = p+1;
         end
     end
