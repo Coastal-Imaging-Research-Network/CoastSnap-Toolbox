@@ -22,7 +22,7 @@ function varargout = CSP(varargin)
 
 % Edit the above text to modify the response to help CSP
 
-% Last Modified by GUIDE v2.5 06-Jun-2019 15:53:47
+% Last Modified by GUIDE v2.5 10-Jun-2019 20:04:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -110,8 +110,8 @@ function rectimage_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-CSPGrectifyImage(handles,[1:7]);
-
+%CSPGrectifyImage(handles,[1:7]);
+CSPGrectifyImage(handles,[3:9]);
 
 % --- Executes on button press in mapshoreline.
 function mapshoreline_CreateFcn(hObject, eventdata, handles)
@@ -281,6 +281,61 @@ function trendinterval_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function trendinterval_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to trendinterval (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in PlotShorelineChange.
+function PlotShorelineChange_Callback(hObject, eventdata, handles)
+% hObject    handle to PlotShorelineChange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+CSPGmakeShorelineChangePlot(handles)
+
+
+
+function previousshoreline_Callback(hObject, eventdata, handles)
+% hObject    handle to previousshoreline (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of previousshoreline as text
+%        str2double(get(hObject,'String')) returns contents of previousshoreline as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function previousshoreline_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to previousshoreline (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tidetolerance_Callback(hObject, eventdata, handles)
+% hObject    handle to tidetolerance (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tidetolerance as text
+%        str2double(get(hObject,'String')) returns contents of tidetolerance as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function tidetolerance_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tidetolerance (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
