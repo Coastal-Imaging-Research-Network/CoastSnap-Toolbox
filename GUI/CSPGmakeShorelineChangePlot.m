@@ -5,8 +5,9 @@ function CSPGmakeShorelineChangePlot(handles)
 data = get(handles.oblq_image,'UserData');
 data_plan = get(handles.plan_image,'UserData');
 width = 20; %Width of figure in cm
-transect_nos = [10:120];
+transect_nos = data.siteDB.sl_settings.transect_averaging_region; %Transects to average over
 prevshoreline = str2num(get(handles.previousshoreline,'String')); %How many shorelines to step back
+slope = data.siteDB.sl_settings.beach_slope;
 
 %Get shoreline list for site
 [slepochs,slfiles,slpaths,sltide] = CSPgetShorelineList(data.site);
@@ -66,7 +67,6 @@ for j = 1:length(transect_nos)
     end
 end
 %Tidally-correct data
-slope = 0.07;
 bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
 p(1,:) = p(1,:)-bw_corr;
 
@@ -90,7 +90,6 @@ for j = 1:length(transect_nos)
     end
 end
 %Tidally-correct data
-slope = 0.07;
 bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
 p(2,:) = p(2,:)-bw_corr;
 
