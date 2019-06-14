@@ -37,12 +37,13 @@ lastrow = length(data)+1; %Last row where data exists in the CoastSnapDB
 
 %Loop through images in Raw data directory
 for i = 1:length(images)
-    disp(['Renaming image ' num2str(i) ' of ' num2str(length(images))])
     filename = images(i).name;
-    
+    disp(['Renaming image ' num2str(i) ' of ' num2str(length(images)) ' (' filename ')'])
+
     %Automatically write database xls file if the 4K STogram program has
     %been used to get the hashtag
-    if length(filename)==58 %Filename lengths for 4KStogram are 58 characters lonog
+    filename_split = strsplit(filename,'_'); %Get first part of filename as this length should not vary in 4K Stogram
+    if length(filename_split{1})==39 %First part of filename of 4KStogram should be 39 characters long
         lastrow = lastrow+1;
         fourKstogramdate = datenum(filename(1:16),'yyyy-mm-dd HH.MM');
         II = imread(fullfile(imagedir,filename));
@@ -69,9 +70,15 @@ for i = 1:length(images)
         end
     else
         I = find(strcmp(filename,txt(:,5)));
-        user = regexprep(txt{I,2},'[^\w'']','');
-        imtype = regexprep(txt{I,7},'[^\w'']','');
-        gmt_time = imtimesGMT(I-1);
+        if length(I)>1
+            error(['More than one image found with the filename ' filename '. Please check the DB and reprocess'])
+        elseif length(I)==0&&length(filename_split{1})~=39
+            error(['Cannot find the file ' filename '. Please check the DB and reprocess'])
+        else
+            user = regexprep(txt{I,2},'[^\w'']','');
+            imtype = regexprep(txt{I,7},'[^\w'']','');
+            gmt_time = imtimesGMT(I-1);
+        end
     end
     
     epochtime = matlab2Epoch(gmt_time);
