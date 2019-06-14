@@ -64,9 +64,8 @@ out.tide.file = char(raw(I,2));
 %Get shoreline mapping settings
 I = find(strcmp(raw(:,1),'Transect file'));
 out.sl_settings.transect_file = char(raw(I,2));
-%I = find(strcmp(raw(:,1),'CCD threshold')); %MDH 25/6/2018 CCD threshold
-%no longer needed
-%out.sl_settings.CCDthresh = cell2mat(raw(I,2));
+I = find(strcmp(raw(:,1),'Transect averaging region')); 
+out.sl_settings.transect_averaging_region = cell2mat(raw(I,2));
 
 %Get GCPs
 I = find(strcmp(raw(:,1),'GCP name'));
@@ -77,6 +76,22 @@ for i = 1:length(I)
     out.gcp(i).z = cell2mat(raw(I(i)+3,2));
 end
 
-
+%Get GCP combos
+I = find(strcmp(raw(:,1),'GCP combo'));
+for i = 1:length(I)
+    out.gcp_combo(i).combo = str2num(cell2mat(raw(I(i),2)));
+    timeIn = cell2mat(raw(I(i)+1,2));
+    timeOut = cell2mat(raw(I(i)+2,2));
+    if ~contains(timeIn,':')     %If hours are midnight
+        out.gcp_combo(i).TimeIn = matlab2Epoch(datenum(timeIn,'dd/mm/yyyy'));
+    else
+        out.gcp_combo(i).TimeIn = matlab2Epoch(datenum(timeIn,'dd/mm/yyyy HH:MM:SS'));
+    end
+    if ~contains(timeOut,':')     %If hours are midnight
+        out.gcp_combo(i).TimeOut = matlab2Epoch(datenum(timeOut,'dd/mm/yyyy'));
+    else
+        out.gcp_combo(i).TimeOut = matlab2Epoch(datenum(timeOut,'dd/mm/yyyy HH:MM:SS'));
+    end
+end
 
 
