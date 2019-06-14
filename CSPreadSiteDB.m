@@ -65,7 +65,9 @@ out.tide.file = char(raw(I,2));
 I = find(strcmp(raw(:,1),'Transect file'));
 out.sl_settings.transect_file = char(raw(I,2));
 I = find(strcmp(raw(:,1),'Transect averaging region')); 
-out.sl_settings.transect_averaging_region = cell2mat(raw(I,2));
+out.sl_settings.transect_averaging_region = str2num(cell2mat(raw(I,2)));
+I = find(strcmp(raw(:,1),'Characteristic beach slope')); 
+out.sl_settings.beach_slope = cell2mat(raw(I,2));
 
 %Get GCPs
 I = find(strcmp(raw(:,1),'GCP name'));
