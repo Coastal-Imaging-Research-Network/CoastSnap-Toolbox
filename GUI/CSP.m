@@ -110,8 +110,8 @@ function rectimage_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-%CSPGrectifyImage(handles,[1:7]);
-CSPGrectifyImage(handles,[3:9]);
+CSPGrectifyImage(handles);
+
 
 % --- Executes on button press in mapshoreline.
 function mapshoreline_CreateFcn(hObject, eventdata, handles)
