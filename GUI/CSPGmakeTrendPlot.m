@@ -5,9 +5,10 @@ function CSPGmakeTrendPlot(handles)
 data = get(handles.oblq_image,'UserData');
 data_plan = get(handles.plan_image,'UserData');
 width = 20; %Width of figure in cm
-transect_nos = [10:120];
+transect_nos = data.siteDB.sl_settings.transect_averaging_region; %Transects to average over
 trendinterval = str2num(get(handles.trendinterval,'String')); %In days (usually 6 weeks)
 trendinterval_seconds = trendinterval*3600*24;
+slope = data.siteDB.sl_settings.beach_slope;
 
 %Get shoreline list for site
 [slepochs,slfiles,slpaths,sltide] = CSPgetShorelineList(data.site);
@@ -64,21 +65,18 @@ for i = 1:length(Icommon)
         end
     end
     %Tidally-correct data
-    slope = 0.07;
-    bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
+    bw_corr = (data.tide_level-sl.xyz(1,3))/slope; %Slope taken from characteristic beach slope in CoastSnapDB 
     p(i,:) = p(i,:)-bw_corr;
 end
 h = legend(imtimes,'location','NorthEast');
 h.FontSize = 8;
-
-    
+   
 %Plot time-series below
 ver_mar2 = [ver_mar(1)+ax_height+plot_gap plot_bot];
 hor_mar2 = [1.5 width/2];
 geomplot(1,1,1,1,width,ax_height2,hor_mar2,ver_mar2,mid_mar)
 dates = datenum(imtimes,'dd/mm/yyyy');
 av_bw = nanmean(p');
-
 for i = 1:length(dates)
 plot(dates(i),av_bw(i),'.','markersize',20,'color',colors(i,:))
 hold on
