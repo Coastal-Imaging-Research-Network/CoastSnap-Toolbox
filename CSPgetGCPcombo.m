@@ -10,7 +10,7 @@ function out = CSPgetGCPcombo(siteDB,epoch)
 
 TimeIns = [siteDB.gcp_combo.TimeIn];
 TimeOuts = [siteDB.gcp_combo.TimeOut];
-I1 = min(find(epoch>TimeIns));
-I2 = min(find(epoch<TimeOuts)); %I1 and I2 should in theory be the same
-I = I1;
+I1 = find(TimeIns<epoch);
+I2 = find(TimeOuts>epoch); %max(I1) and min(I2) should in theory be the same
+I = max(I1);
 out = siteDB.gcp_combo(I).combo;
