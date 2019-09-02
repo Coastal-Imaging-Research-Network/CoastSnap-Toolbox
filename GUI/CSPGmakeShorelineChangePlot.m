@@ -86,7 +86,16 @@ for j = 1:length(transect_nos)
     if ~isempty(x_int)
         p(2,j) = sqrt((x_int-SLtransects.x(1,transect_nos(j)))^2+(y_int-SLtransects.y(1,transect_nos(j)))^2);
     else
-        disp(['Warning: shoreline does not intersect with transect number ' num2str(transect_nos(j))])
+        %Extend transect by 50% just in case it is not long enough
+        pt1 =[SLtransects.x(1,transect_nos(j)),SLtransects.y(1,transect_nos(j))];
+        pt2 =[SLtransects.x(2,transect_nos(j)),SLtransects.y(2,transect_nos(j))];
+        pt2new = pt1+1.5*(pt2-pt1);
+        [x_int,y_int] = polyxpoly(sl.xyz(:,1),sl.xyz(:,2),[pt1(1);pt2new(1)],[pt1(2);pt2new(2)]);
+        if ~isempty(x_int)
+            p(2,j) = sqrt((x_int-SLtransects.x(1,transect_nos(j)))^2+(y_int-SLtransects.y(1,transect_nos(j)))^2);
+        else
+            disp(['Warning: shoreline does not intersect with transect number ' num2str(transect_nos(j))])
+        end
     end
 end
 %Tidally-correct data
@@ -101,15 +110,16 @@ h.FontSize = 8;
 ver_mar2 = [ver_mar(1)+ax_height+plot_gap plot_bot];
 hor_mar2 = [1.5 width/2];
 geomplot(1,1,1,1,width,ax_height2,hor_mar2,ver_mar2,mid_mar)
-area(transect_nos,diff(p));
-xlim([min(transect_nos) max(transect_nos)])
+alongshore_distances = SLtransects.alongshore_distances(transect_nos);
+area(alongshore_distances,diff(p));
+xlim([min(alongshore_distances) max(alongshore_distances)])
 YL1 = interp1([-400:5:400],[-400:5:400],min(diff(p))-5,'nearest');
 YL2 = interp1([-400:5:400],[-400:5:400],max(diff(p))+5,'nearest');
 ylim([YL1 YL2])
 set(gcf,'color','w')
 set(gca,'fontsize',9)
 ylabel('Beach change (m)','fontsize',12)
-xlabel('Alongshore transect','fontsize',12)
+xlabel('Alongshore distance (m)','fontsize',12)
 set(gca,'ygrid','on')
 set(gca,'xgrid','on')
 XL = xlim;
