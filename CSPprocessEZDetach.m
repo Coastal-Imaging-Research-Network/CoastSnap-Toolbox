@@ -2,8 +2,7 @@
 CSPloadPaths
 
 %Read files in directory
-%EZdir = 'C:\Users\z2273773\OneDrive - UNSW\RESEARCH2\CoastSnap\EZDetach';
-EZdir = 'D:\OneDrive - UNSW\RESEARCH2\CoastSnap\EZDetach';
+EZdir = 'C:\Users\z2273773\OneDrive - UNSW\RESEARCH2\CoastSnap\EZDetach';
 files1 = dir([EZdir filesep '*.jpg']);files2 = dir([EZdir filesep '*.jpeg']);
 files = [files1; files2];
 dbfile = fullfile([DB_path filesep 'CoastSnapDB.xlsx']);
@@ -31,8 +30,10 @@ for i = 1:length(files)
     exif = imfinfo(fullfile(EZdir,fname));
     if isfield(exif,'DateTime') %If there is Exif data on the capture time
         time = datenum(exif.DateTime,'yyyy:mm:dd HH:MM:SS');
+        timequality = 1; %Trust the exif data
     else
-        time = datenum(C{2},'yyyymmddHHMM');
+        time = datenum(C{2},'yyyymmddHHMM'); %Time email was sent
+        timequality = 2; %Have less trust in time coming from email time sent
     end
     user = C{3};
     subject = C{4};
@@ -40,7 +41,12 @@ for i = 1:length(files)
     user = C2{1};
     if isfield(exif,'GPSInfo')
         if isfield(exif.GPSInfo,'GPSLatitude')
-            lats = dms2degrees(exif.GPSInfo.GPSLatitude);
+            lat = exif.GPSInfo.GPSLatitude;
+            if lat(3)==60
+                lat(2) = lat(2)+1;
+                lat(3) = 0;
+            end
+            lats = dms2degrees(lat);
             lons = dms2degrees(exif.GPSInfo.GPSLongitude);
             dists = sqrt((-lats-sitelat).^2+(lons-sitelon).^2);
             I = find(dists<distthresh);
@@ -81,7 +87,6 @@ for i = 1:length(files)
     startcell = ['A' num2str(lastrow)];
     imtype = 'Snap'; %Assume it is a snap
     timezone = 'AEST';
-    timequality = 1;
     filename = files(i).name;
     filename = strrep(filename,'jpeg','jpg'); %Change file extension to jpg
     newdata = {thissite,user, datestr(time,'dd/mm/yyyy HH:MM'),timezone,filename,'Email',imtype,timequality};
