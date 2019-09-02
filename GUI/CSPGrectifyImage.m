@@ -80,6 +80,9 @@ if go==1 %If hasn't been previously rectified
     % click on gcps (if not using old metadata)
     for i = 1: nGcps
         title((['GCP ' num2str(i) ' of ' num2str(nGcps) ': Digitize ' gcp(i).name]));
+           % Let the mouse around and see the values.
+                hPixelInfo = impixelinfo();
+                set(hPixelInfo, 'Unit', 'Normalized', 'Position', [.45 .96 .2 .1]);
         % you can zoom with your mouse and when your image is okay, you press any key
         zoom on;
         pause()
