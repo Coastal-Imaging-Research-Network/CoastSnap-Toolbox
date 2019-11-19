@@ -9,8 +9,8 @@ sl = data_plan.sl;
 metadata = data_plan.metadata;
 siteDB = data.siteDB;
 h = impoly(handles.plan_image,sl.xyz(:,1:2),'closed',0);
-disp('Please edit your shoreline now or press any key to continue')
-pause
+disp('Please edit your shoreline now and double click when done')
+wait(h);
 zoom off
 newpos = getPosition(h);
 delete(h)
@@ -37,10 +37,3 @@ data_plan.sl_handle_plan=plot(xyz(:,1),xyz(:,2),'y','linewidth',2);
 %Send new data to GUI
 set(handles.plan_image,'UserData',data_plan)
 set(handles.oblq_image,'UserData',data)
-
-
-
-
-
-
-
