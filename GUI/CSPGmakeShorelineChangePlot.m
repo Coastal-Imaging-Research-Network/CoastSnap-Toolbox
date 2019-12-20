@@ -45,7 +45,7 @@ p =NaN(2,length(transect_nos)); %beach width matrix to calculate alongshore-aver
 
 %Plot previous and present shoreline
 Inow = find(data.epoch==navepochs(Icommon));
-Iprev = Inow-prevshoreline; %Taken from GUI
+Iprev = max(1,Inow-prevshoreline); %Taken from GUI. If a negative number, use the first shoreline in record
 
 %First do previous
 imdata = CSPparseFilename(navfiles(Icommon(Iprev)).name);
