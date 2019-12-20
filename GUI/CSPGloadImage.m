@@ -55,6 +55,7 @@ end
 imdata = CSPparseFilename(fname);
 sldir = fullfile(shoreline_path,imdata.site,imdata.year);
 sl_fname = strrep(fname,'snap','shoreline');
+sl_fname = strrep(sl_fname,'timex','shoreline'); %To deal with timex images as well
 sl_fname = strrep(sl_fname,'.jpg','.mat');
 if exist(fullfile(sldir,sl_fname),'file')
     load(fullfile(sldir,sl_fname));
