@@ -1,6 +1,6 @@
 %Insert site-specific data here
 site = 'blacksmiths'
-photoshoptemp_dir = 'C:\Users\z2273773\Desktop\Photoshop Temp'; %Name of directory where you have saved your registered images from photoshop
+photoshoptemp_dir = 'C:\Users\z2273773\Desktop\To register\Registered'; %Name of directory where you have saved your registered images from photoshop
 
 
 %Now do processing
@@ -13,7 +13,7 @@ for i = 1:length(files)
     %out = CSreadImageData(files(i).name)
     
     out = CSPparseFilename(fname)
-    I = imread(files(i).name);
+    I = imread(fullfile(photoshoptemp_dir,files(i).name));
     width = 20;
 ax_height = width*size(I,1)/size(I,2);
 geomplot(1,1,1,1,width,ax_height,[0 0],[0 0],[0 0])
@@ -27,6 +27,6 @@ txt = ['Date: ' datestr(matlablocal,'yyyy/mm/dd') ' Time: ' datestr(matlablocal,
 h=text(XL(1)+0.02*diff(XL),YL(1)+0.02*diff(YL),txt,'color',0.2*[1 1 1]);
 h.HorizontalAlignment = 'left';
 h.FontSize = 12;
-print(strrep(fname,'.jpg','_registered.jpg'),'-r400','-djpeg')
+print(fullfile(photoshoptemp_dir,strrep(fname,'.jpg','_registered.jpg')),'-r400','-djpeg')
 close all
 end
