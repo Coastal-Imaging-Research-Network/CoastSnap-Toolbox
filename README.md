@@ -14,7 +14,7 @@ Thats all - you should now be up and running
 
 ## Demo using manly CoastSnap example
 
-
+![](demo.gif)
 
 ## Setting up a new CoastSnap station
 
