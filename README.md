@@ -1,6 +1,6 @@
 # CoastSnap Community Beach Monitoring ToolBox
 
-This toolbox was written by Dr. Mitchell Harley at the University of New South Wales (Australia). Please refer to the publication
+This toolbox was written by Dr. Mitchell Harley at the University of New South Wales (Australia). Please refer to the [publication in Coastal Engineering](https://www.sciencedirect.com/science/article/abs/pii/S0378383918304551) for further information.
 
 ## Getting Started
 
