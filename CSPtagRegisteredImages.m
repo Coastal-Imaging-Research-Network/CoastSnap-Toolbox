@@ -1,6 +1,6 @@
 %Insert site-specific data here
 site = 'blacksmiths'
-photoshoptemp_dir = 'C:\Users\z2273773\Desktop\To register\Registered'; %Name of directory where you have saved your registered images from photoshop
+photoshoptemp_dir = 'C:\Users\z2273773\Desktop\blacksmiths\r'; %Name of directory where you have saved your registered images from photoshop
 
 
 %Now do processing

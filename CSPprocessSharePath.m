@@ -1,6 +1,7 @@
 %First, load paths
 CSPloadPaths
 user = 'Jady Swinkels';
+timezone = 'AEDT';
 
 %Read files in directory
 EZdir = 'C:\Users\z2273773\Google Drive\CoastSnap\Images\share_link';
@@ -90,7 +91,6 @@ for i = 1:length(files)
     %Update DB and move file
     startcell = ['A' num2str(lastrow)];
     imtype = 'Snap'; %Assume it is a snap
-    timezone = 'AEST';
     filename = files(i).name;
     filename = strrep(filename,'jpeg','jpg'); %Change file extension to jpg
     newdata = {thissite,user, datestr(time,'dd/mm/yyyy HH:MM'),timezone,filename,'Email',imtype,timequality};

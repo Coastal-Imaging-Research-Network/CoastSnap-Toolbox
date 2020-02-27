@@ -100,7 +100,8 @@ if go==1 %If hasn't been previously rectified
     %find optimum focal length based on trial values
     fx_mid = interp1([5:5:50000],[5:5:50000],815/960*inputs.cameraRes(1),'nearest'); %Range of trial focal length values depending on image resolution. May need to be modified in the future
     if inputs.cameraRes(1)> 1200 %For larger images
-        fx = fx_mid-800:5:fx_mid+800;
+        %fx = fx_mid-800:5:fx_mid+800;
+        fx = fx_mid-400:5:fx_mid+4000;
     else
         fx = fx_mid-400:5:fx_mid+400;
     end

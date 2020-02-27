@@ -25,7 +25,7 @@ end
 distthresh = 0.05;
 for i = 1:length(files)
     lastrow = lastrow+1;
-    fname = files(i).name;
+    fname = files(i).name
     C = strsplit(fname,'_');
     exif = imfinfo(fullfile(EZdir,fname));
     if isfield(exif,'DateTime') %If there is Exif data on the capture time
@@ -86,7 +86,7 @@ for i = 1:length(files)
     %Update DB and move file
     startcell = ['A' num2str(lastrow)];
     imtype = 'Snap'; %Assume it is a snap
-    timezone = 'AEST';
+    timezone = 'AEDT';
     filename = files(i).name;
     filename = strrep(filename,'jpeg','jpg'); %Change file extension to jpg
     newdata = {thissite,user, datestr(time,'dd/mm/yyyy HH:MM'),timezone,filename,'Email',imtype,timequality};
