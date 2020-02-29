@@ -1,4 +1,4 @@
-function CSPraw2ProcessedNoDB(site,user)
+function CSPraw2ProcessedNoDB(site,user,imtype)
 %function CSPraw2ProcessedNoDB(site,user)
 %
 %Function that renames the image data from the raw filename and stored in the Raw Image folder. Image data is renamed
@@ -15,29 +15,29 @@ CSPloadPaths
 %First find path of DB Excel file and read database
 siteDB = CSPreadSiteDB(site); %Read metadata
 
-%Read image times - make sure Excel format is as below
-if isempty(strfind(txt{2,3},'PM'))||isempty(strfind(txt{2,3},'AM')) %if using AM/PM
-    imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS AM');
-else
-    imtimes = datenum(char(txt{2:end,3}),'dd/mm/yyyy HH:MM:SS'); %if using 24 hour clock
-end
-
 %Read through images found in Raw file
 imagedir = [image_path filesep site filesep 'Raw' filesep];
 images = dir([imagedir '*.jpg']);
-lastrow = length(data)+1; %Last row where data exists in the CoastSnapDB
 
 %Loop through images in Raw data directory
 for i = 1:length(images)
     filename = images(i).name;
     disp(['Renaming image ' num2str(i) ' of ' num2str(length(images)) ' (' filename ')'])
     
-    exif = imfinfo(fullfile(imagedir,fname));
-    if isfield('DateTime')
+    exif = imfinfo(fullfile(imagedir,filename));
+    if isfield(exif,'DateTime')
         time = datenum(exif.DateTime,'yyyy:mm:dd HH:MM:SS');
     else
-        newtime = inputdlg('No image time found in image exif data. Please input a time (format dd/mm/yyyy HH:MM)','Image time','dd/mm/yyyy HH:MM');
-        time = datenum(char(newtime),'dd/mm/yyyy HH:MM');
+        I = imread(fullfile(imagedir,filename));
+        %h = figure;
+        %image(I)
+        %newtime = inputdlg('No image time found in image exif data. Please input a time (format dd/mm/yyyy HH:MM)','Image time',1,{'dd/mm/yyyy HH:MM'});
+        %time = datenum(char(newtime),'dd/mm/yyyy HH:MM');
+        %close(h)
+        time_ocr = ocr(I(1400:end,1380:end,:));
+        time = strrep(time_ocr.Text,' ',''); time = strrep(time,'O','0');
+        time = [time(1:10) ' ' time(11:18)];
+        time = datenum(time,'dd/mm/yyyy HH:MM');     
     end
     gmt_time = time-siteDB.timezone.gmt_offset/24;
     epochtime = matlab2Epoch(gmt_time);
