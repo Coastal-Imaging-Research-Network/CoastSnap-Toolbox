@@ -9,13 +9,14 @@ fileparts = CSPparseFilename(data.fname);
 rect_path = strrep(data.pname,'Processed','Rectified');
 rect_name = strrep(data.fname,'snap','plan'); %Rectified is called plan to keep with Argus conventions
 rect_name = strrep(rect_name,'timex','plan'); %For timex images
+rect_name = strrep(rect_name,'jpg','mat'); %Need to load mat file
 
 %Only continue if image has a geometry
 if ~exist(fullfile(rect_path,rect_name),'file')
     warndlg('Image has not been rectified. Please rectify image (Step 2) and try again','Image not rectified')
 else
     load(fullfile(rect_path,rect_name)) %Load geometry
-    [fname,~]=uigetfile([data.oname filesep '*.jpg'],'Select last image of bulk rectify and map');
+    [fname,~]=uigetfile([data.pname filesep '*.jpg'],'Select last image of bulk rectify and map');
     endfile = CSPparseFilename(fname);
     endepoch = str2num(endfile.epochtime);
     
@@ -24,14 +25,15 @@ else
         warndlg('End image selected is before start image. Please try again')
     else
         %Now loop over images
-        I = find(data.navigation.epochs>data.epoch&data.navigation.epochs<=endepoch); %Find images between these two dates
-        for i = 1:length(I)
-            disp(['Rectifying and mapping ' num2str(i) ' of ' num2str(length(I)) ' images'])
+        II = find(data.navigation.epochs>data.epoch&data.navigation.epochs<=endepoch); %Find images between these two dates
+        for i = 1:length(II)
+            disp(['Rectifying and mapping ' num2str(i) ' of ' num2str(length(II)) ' images'])
             
             %First step is to rectify
             %First check if rectify image already exists
-            newfname = data.navigation.files(I(i)).name;
-            newpname = data.navigation.paths(I(i)).name;
+            newfname = data.navigation.files(II(i)).name;
+            newpname = data.navigation.paths(II(i)).name;
+            I = imread(fullfile(newpname,newfname)); %Read image
             fileparts = CSPparseFilename(newfname);
             rect_path = strrep(newpname,'Processed','Rectified');
             rect_path = strrep(rect_path,'Registered','Rectified'); %For images coming from registered folder
@@ -51,6 +53,7 @@ else
             images.z = inputs.rectz;
             images = buildRectProducts(1, images, I, metadata.geom.betas, metadata.geom); %Metadata from original image
             finalImages = makeFinalImages(images);
+            clear images
             
             %Build matrix
             xgrid = finalImages.x;
@@ -86,23 +89,40 @@ else
             out.UV = reshape(UV,length(out.xyz),2);
             out.method = sl.method;
             out.threshold = sl.threshold;
+            out.QA = 0; %Switch to say whether shoreline has been QA'd or not
             sl = out;
             
             %% Plot results
-            newfig = figure; %pop up new figure
-            subplot(121) %Use subplot for now, geomplot would be nicer
-            I = imread(fullfile(newpname,newfname));
+            if i==1
+                newfig = figure; %pop up new figure
+            else
+                figure(newfig)
+            end
+            axheight = 10;
+            width1 = axheight*size(I,2)/size(I,1); %Width of oblique image
+            width2 = axheight*(siteDB.rect.xlim(2)-siteDB.rect.xlim(1))/(siteDB.rect.ylim(2)-siteDB.rect.xlim(1)); %Width of rectified image
+            ver_mar = [0.5 0.5];
+            hor_mar = [0.5 0.5];
+            mid_mar = [0.5 0.5];
+            hor_mar1 = [hor_mar(1) mid_mar(1)+width2+hor_mar(2)];
+            hor_mar2 = [hor_mar(1)+width1+mid_mar(1) hor_mar(2)];
+            width = width1+mid_mar(1)+width2+sum(hor_mar);
+            geomplot(1,1,1,1,width,axheight,hor_mar1,ver_mar,mid_mar)
             image(I)
             hold on
             plot(sl.UV(:,1),sl.UV(:,2),'y')
-            hold off
-            subplot(122)
+            axis off
+            hold off            
+            geomplot(1,1,1,1,width,axheight,hor_mar2,ver_mar,mid_mar)
             imagesc(finalImages.x,finalImages.y,finalImages.timex);
             hold on
             plot(sl.xyz(:,1),sl.xyz(:,2),'y')
             hold off
             xlabel('Eastings [m]'); ylabel('Northings [m]'); title('Rectified Image');
             axis xy;axis image; grid on
+            set(gcf,'color','w')
+            %pause(0.3)
+                      
             
             %%Save data to file
             %imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
