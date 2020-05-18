@@ -9,6 +9,7 @@ axes(handles.oblq_image) %Plot gpcs on GUI axis
 %First, check if image has already been rectified
 fileparts = CSPparseFilename(data.fname);
 rect_path = strrep(data.pname,'Processed','Rectified');
+rect_path = strrep(rect_path,'Registered','Rectified'); %For Registered images
 rect_name = strrep(data.fname,'snap','plan'); %Rectified is called plan to keep with Argus conventions
 rect_name = strrep(rect_name,'timex','plan'); %For timex images
 go = 1;
