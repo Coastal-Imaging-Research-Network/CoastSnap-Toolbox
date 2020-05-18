@@ -117,9 +117,9 @@ YL1 = interp1([-400:5:400],[-400:5:400],min(diff(p))-5,'nearest');
 YL2 = interp1([-400:5:400],[-400:5:400],max(diff(p))+5,'nearest');
 ylim([YL1 YL2])
 set(gcf,'color','w')
-set(gca,'fontsize',9)
-ylabel('Beach change (m)','fontsize',12)
-xlabel('Alongshore distance (m)','fontsize',12)
+set(gca,'fontsize',8)
+ylabel('Beach change (m)','fontsize',10)
+xlabel('Alongshore distance (m)','fontsize',10)
 set(gca,'ygrid','on')
 set(gca,'xgrid','on')
 XL = xlim;
