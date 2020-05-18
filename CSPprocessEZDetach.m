@@ -1,6 +1,10 @@
 %First, load paths
 CSPloadPaths
 
+%Set timezone
+timezone = 'AEST';
+
+
 %Read files in directory
 EZdir = 'C:\Users\z2273773\OneDrive - UNSW\RESEARCH2\CoastSnap\EZDetach';
 files1 = dir([EZdir filesep '*.jpg']);files2 = dir([EZdir filesep '*.jpeg']);
@@ -12,8 +16,8 @@ lastrow = length(data)+1; %Last row where data exists in the CoastSnapDB
 %Get lat lon of sites
 lats = NaN(length(files),1);
 lons = NaN(length(files),1);
-sites = {'manly','nthnarra','blacksmiths','byron'};
-UTM = {'56 H','56 H','56 H','56 J'};
+sites = {'manly','nthnarra','blacksmiths','byron','tomakin','broulee'};
+UTM = {'56 H','56 H','56 H','56 J','56 H','56 H'};
 sitelat = NaN(length(sites),1);
 sitelon = NaN(length(sites),1);
 for i = 1:length(sites)
@@ -70,6 +74,10 @@ for i = 1:length(files)
         thissite = 'byron';
     elseif ~isempty(strfind(lower(subject),'black'))
         thissite = 'blacksmiths';
+    elseif ~isempty(strfind(lower(subject),'broulee'))
+        thissite = 'broulee';
+    elseif ~isempty(strfind(lower(subject),'tomakin'))
+        thissite = 'tomakin';
     end
     
     
@@ -86,7 +94,6 @@ for i = 1:length(files)
     %Update DB and move file
     startcell = ['A' num2str(lastrow)];
     imtype = 'Snap'; %Assume it is a snap
-    timezone = 'AEDT';
     filename = files(i).name;
     filename = strrep(filename,'jpeg','jpg'); %Change file extension to jpg
     newdata = {thissite,user, datestr(time,'dd/mm/yyyy HH:MM'),timezone,filename,'Email',imtype,timequality};
