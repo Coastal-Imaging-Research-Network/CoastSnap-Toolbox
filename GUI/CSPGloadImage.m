@@ -36,6 +36,7 @@ set(handles.plan_image,'Visible','off');%Hide axis of plan image
 
 %Check if image has already been rectified and shoreline mapped
 rect_path = strrep(pname,'Processed','Rectified');
+rect_path = strrep(rect_path,'Registered','Rectified'); %For Registered images
 rect_name = strrep(fname,'snap','plan'); %Rectified is called plan to keep with Argus conventions
 rect_name = strrep(rect_name,'timex','plan'); %For timex images
 if exist(fullfile(rect_path,rect_name),'file')
@@ -83,7 +84,12 @@ disp(['Tide level of image is ' num2str(tideZ,'%0.2f') ' m'])
 if nargin==1 %Only reset this if user is loading a new image
     disp('Finding all images within tidal tolerance...')
     tide_tol = str2num(get(handles.tidetolerance,'String')); %Tolerance to find images of similar tide levels (default 0.2m)
-    [epochs_im,im_files,im_paths,im_tides]=CSPgetImageList(data.site,'Processed');
+    if contains(imdata.user,'_registered')
+       type = 'Registered';
+    else
+        type = 'Processed';
+    end
+    [epochs_im,im_files,im_paths,im_tides]=CSPgetImageList(data.site,type);
     Iim = find(im_tides>(tideZ-tide_tol)&im_tides<(tideZ+tide_tol)); %find images within a similar tide level according to
     navepochs = epochs_im(Iim); %epochs of images within tidal tolerance of loaded image
     [navepochs,Iunique] = unique(navepochs); %Just in case there are two of the same images in the database
