@@ -6,7 +6,7 @@ function [epochtimes,filenames,filepaths,tide_levels] = CSPgetImageList(site,typ
 %processed images in database for a particular site
 %
 %site = sitename (e.g. 'byron')
-%type = 'Processed' for processed images or 'Rectified' for rectified
+%type = 'Processed' for processed images, 'Registered' for registered images or 'Rectified' for rectified
 %images
 %
 %Created by Mitch Harley
