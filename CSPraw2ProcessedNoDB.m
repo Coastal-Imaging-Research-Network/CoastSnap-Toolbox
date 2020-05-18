@@ -1,4 +1,4 @@
-function CSPraw2ProcessedNoDB(site,user,imtype)
+function CSPraw2ProcessedNoDB(site,user,imtype,timezone)
 %function CSPraw2ProcessedNoDB(site,user)
 %
 %Function that renames the image data from the raw filename and stored in the Raw Image folder. Image data is renamed
@@ -11,6 +11,7 @@ function CSPraw2ProcessedNoDB(site,user,imtype)
 
 %First, load paths
 CSPloadPaths
+warning('off')
 
 %First find path of DB Excel file and read database
 siteDB = CSPreadSiteDB(site); %Read metadata
@@ -37,9 +38,15 @@ for i = 1:length(images)
         time_ocr = ocr(I(1400:end,1380:end,:));
         time = strrep(time_ocr.Text,' ',''); time = strrep(time,'O','0');
         time = [time(1:10) ' ' time(11:18)];
-        time = datenum(time,'dd/mm/yyyy HH:MM');     
+        time = datenum(time,'dd/mm/yyyy HH:MM');
     end
-    gmt_time = time-siteDB.timezone.gmt_offset/24;
+    
+    %Get GMT Time
+    if strcmp(timezone,siteDB.timezone.name)
+        gmt_time = time-siteDB.timezone.gmt_offset/24;
+    elseif strcmp(timezone,siteDB.timezone.alternative.name);
+        gmt_time = time-siteDB.timezone.alternative.gmt_offset/24;
+    end
     epochtime = matlab2Epoch(gmt_time);
     user = strrep(user,'_',''); user = strrep(user,'.',''); %Get rid of underscore or full stops if any exists
     newname = CSPargusFilename(epochtime,site,-1,lower(imtype),char(user),'jpg');
