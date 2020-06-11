@@ -22,7 +22,7 @@ function varargout = CSP(varargin)
 
 % Edit the above text to modify the response to help CSP
 
-% Last Modified by GUIDE v2.5 29-Feb-2020 13:32:30
+% Last Modified by GUIDE v2.5 26-May-2020 20:22:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -370,4 +370,21 @@ function qashoreline_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 CSPGqaShoreline(handles)
+
+
+
+% --------------------------------------------------------------------
+function Menu_tools_Callback(hObject, eventdata, handles)
+% hObject    handle to Menu_tools (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function getVirtualGCP_Callback(hObject, eventdata, handles)
+% hObject    handle to getVirtualGCP (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+CSPGgetVirtualGCP(handles)
 
