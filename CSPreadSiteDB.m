@@ -54,6 +54,11 @@ I = find(strcmp(raw(:,1),'Initial Roll Estimate'));
 out.rect.initial.roll = cell2mat(raw(I,2));
 I = find(strcmp(raw(:,1),'Tidal offset'));
 out.rect.tidal_offset = cell2mat(raw(I,2));
+I1 = find(strcmp(raw(:,1),'Min FOV'));
+I2 = find(strcmp(raw(:,1),'Max FOV'));
+out.rect.FOVlims = [cell2mat(raw(I1,2)) cell2mat(raw(I2,2))];
+I = find(strcmp(raw(:,1),'Acceptable Accuracy'));
+out.rect.accuracylim = cell2mat(raw(I,2));
 
 %Calculate rotation angle TO BE ADDED IN THE FUTURE
 
@@ -80,20 +85,5 @@ end
 
 %Get GCP combos
 I = find(strcmp(raw(:,1),'GCP combo'));
-for i = 1:length(I)
-    out.gcp_combo(i).combo = str2num(cell2mat(raw(I(i),2)));
-    timeIn = cell2mat(raw(I(i)+1,2));
-    timeOut = cell2mat(raw(I(i)+2,2));
-    if ~contains(timeIn,':')     %If hours are midnight
-        out.gcp_combo(i).TimeIn = matlab2Epoch(datenum(timeIn,'dd/mm/yyyy'));
-    else
-        out.gcp_combo(i).TimeIn = matlab2Epoch(datenum(timeIn,'dd/mm/yyyy HH:MM:SS'));
-    end
-    if ~contains(timeOut,':')     %If hours are midnight
-        out.gcp_combo(i).TimeOut = matlab2Epoch(datenum(timeOut,'dd/mm/yyyy'));
-    else
-        out.gcp_combo(i).TimeOut = matlab2Epoch(datenum(timeOut,'dd/mm/yyyy HH:MM:SS'));
-    end
-end
-
+out.gcp_combo = str2num(cell2mat(raw(I,2)));
 
