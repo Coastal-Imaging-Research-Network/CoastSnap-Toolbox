@@ -116,5 +116,14 @@ geomplot(1,1,1,1,width,ax_height3,hor_mar3,ver_mar3,mid_mar)
 image(Ics)
 axis off
 
+%Display some statistics on max and min beach width
+%Minimum
+[Min_BW,Imin] = min(av_bw);
+disp(['Minimum average beach width over time period is ' num2str(Min_BW,'%0.1f')...
+    'm (' datestr(dates(Imin),'dd/mm/yyyy') ')'])
+%Maximum
+[Max_BW,Imax] = max(av_bw);
+disp(['Maximum average beach width over time period is ' num2str(Max_BW,'%0.1f')...
+    'm (' datestr(dates(Imax),'dd/mm/yyyy') ')'])
 
 
