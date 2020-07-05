@@ -51,6 +51,9 @@ if exist(fullfile(rect_path,rect_name),'file')
     data_plan.ygrid = ygrid;
     data_plan.Iplan = Iplan;
     data_plan.metadata = metadata;
+    axes(handles.oblq_image) %Plot to oblq image axis
+    gcp_handle_oblq = plot(metadata.gcps.UVpicked(:,1),metadata.gcps.UVpicked(:,2),'go','markerfacecolor', 'g', 'markersize', 3);
+    data.gcp_handle_oblq = gcp_handle_oblq;
     set(handles.plan_image,'UserData',data_plan) %Store rectified info in userdata of plan_image
 end
 imdata = CSPparseFilename(fname);
@@ -109,9 +112,3 @@ end
 
 %Send data to handle
 set(handles.oblq_image,'UserData',data);
-
-
-
-
-
-
