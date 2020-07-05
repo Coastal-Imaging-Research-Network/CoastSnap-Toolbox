@@ -151,7 +151,7 @@ if go==1 %If hasn't been previously rectified
     
     MSE = mse;
     RMSE = sqrt(MSE);
-    title(sprintf('RMSE = %.2f pixels', RMSE));
+    title(sprintf('RMSE = %.2f pixels, FOV = %0.1f degs', RMSE,FOVmin));
     
     % Save meta structure (if not already there)
     meta.gcpList = 1:nGcps;
