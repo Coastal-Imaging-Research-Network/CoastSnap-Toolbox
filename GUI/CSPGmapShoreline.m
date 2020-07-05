@@ -56,6 +56,7 @@ if go ==1
     out.UV = reshape(UV,length(out.xyz),2);
     out.method = sl.method;
     out.threshold = sl.threshold;
+    out.QA = 1; %Boolean to say whether data has been QA'd or not (for autoshoreline mapping)
     sl = out;
     data_plan.sl = sl;
     
