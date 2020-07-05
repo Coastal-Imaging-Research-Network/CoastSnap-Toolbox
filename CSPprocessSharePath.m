@@ -1,10 +1,11 @@
 %First, load paths
 CSPloadPaths
-user = 'Jady Swinkels';
-timezone = 'AEDT';
+user = 'Jake Cosgrove';
+%timezone = 'AEDT';
+timezone = 'AEST';
 
 %Read files in directory
-EZdir = 'C:\Users\z2273773\Google Drive\CoastSnap\Images\share_link';
+EZdir = 'C:\Users\z2273773\Google Drive\CoastSnap\Images\share_link\stockton1';
 files1 = dir([EZdir filesep '*.jpg']);files2 = dir([EZdir filesep '*.jpeg']);
 files = [files1; files2];
 dbfile = fullfile([DB_path filesep 'CoastSnapDB.xlsx']);
@@ -85,6 +86,8 @@ for i = 1:length(files)
         thissite = 'manly';
     elseif ~isempty(strfind(lower(user),'Jady Swinkels'))
         thissite = 'blacksmiths';
+          elseif ~isempty(strfind(lower(user),'Jake Cosgrove'))
+        thissite = 'stockton2';
     end
     
     
