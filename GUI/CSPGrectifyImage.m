@@ -2,7 +2,8 @@ function out = CSPGrectifyImage(handles)
 
 data = get(handles.oblq_image,'UserData'); %Get data stored in the userdata in the oblq_image handles
 siteDB = data.siteDB;
-gcp_list = CSPgetGCPcombo(siteDB,data.epoch);
+%gcp_list = CSPgetGCPcombo(siteDB,data.epoch);
+gcp_list = siteDB.gcp_combo;
 I = data.I;
 axes(handles.oblq_image) %Plot gpcs on GUI axis
 
@@ -99,8 +100,8 @@ if go==1 %If hasn't been previously rectified
     options.TolX = 1e-12;
     
     %find optimum focal length based on trial values
-    HFOV_min = 40; %Minimum HFOV observed for Smartphones
-    HFOV_max = 120;%For wide angle lenses
+    HFOV_min = siteDB.rect.FOVlims(1); %From DB
+    HFOV_max = siteDB.rect.FOVlims(2);%From DB
     fx_max = 0.5*inputs.cameraRes(1)/tan(HFOV_min*pi/360); %From Eq. 4 in Harley et al. (2019)
     fx_min = 0.5*inputs.cameraRes(1)/tan(HFOV_max*pi/360); %From Eq. 4 in Harley et al. (2019)
     fx_min = interp1([5:5:500000],[5:5:500000],fx_min,'nearest');
@@ -125,7 +126,8 @@ if go==1 %If hasn't been previously rectified
     
     %Find optimum focal length based on minimum MSE
     [MSEmin,Imin] = min(MSEall);
-    disp(['Min RMSE of ' num2str(sqrt(MSEmin)) ' found for fx = ' num2str(fx(Imin))])
+    FOVmin = rad2deg(2*atan(inputs.cameraRes(1)/(2*fx(Imin))));
+    disp(['Min RMSE of ' num2str(sqrt(MSEmin)) ' pixels found for FOV = ' num2str(FOVmin,'%0.1f') ' deg'])
     
     globs.lcp.fx = fx(Imin);
     globs.lcp.fy = fx(Imin);
@@ -193,7 +195,7 @@ if go==1 %If hasn't been previously rectified
     metadata.geom.knowns = globs.knowns;
     
     if RMSE > 10
-        msgbox(['RMSE is large (' num2str(RMSE,'%0.1f') 'm). Consider rectifying your image again. tor educe the error'])
+        msgbox(['RMSE might be too large (' num2str(RMSE,'%0.1f') 'pixels) and hence result was not saved. Consider rectifying your image again. tor educe the error'])
     else
         %Save data to file
         imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
@@ -209,6 +211,5 @@ if go==1 %If hasn't been previously rectified
     data2.Iplan = Iplan;
     data2.metadata = metadata;
     set(handles.plan_image,'UserData',data2) %Store rectified info in userdata of plan_image
-    
-    %Save rectified image to file
+   
 end
