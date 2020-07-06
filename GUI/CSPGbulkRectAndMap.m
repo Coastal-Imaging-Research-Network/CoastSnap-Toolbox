@@ -80,54 +80,59 @@ else
                 sl = mapShorelineHUE(xgrid,ygrid,Iplan,SLtransects,0,0);
             end
             
-            %Add eastings and northings
-            out.whenDone = matlab2Epoch(now-siteDB.timezone.gmt_offset/24); %Get time when done in epochtime (similar to argus)
-            out.xyz = [sl.x sl.y metadata.rectz*ones(size(sl.x))]; %Output as a Mx3 matrix to be the same as
-            out.UTM = [sl.x+siteDB.origin.eastings sl.y+siteDB.origin.northings metadata.rectz*ones(size(sl.x))];
-            out.UTMzone = siteDB.UTMzone;
-            UV = findUVnDOF(metadata.geom.betas,out.xyz,metadata.geom); %Its good practise to store the original Image UV data of the shoreline so you don't have to redo the geometry
-            out.UV = reshape(UV,length(out.xyz),2);
-            out.method = sl.method;
-            out.threshold = sl.threshold;
-            out.QA = 0; %Switch to say whether shoreline has been QA'd or not
-            sl = out;
-            
-            %% Plot results
-            if i==1
-                newfig = figure; %pop up new figure
+            if isempty(sl.x)
+                disp(['No shoreline found for this time'])
             else
-                figure(newfig)
+                
+                %Add eastings and northings
+                out.whenDone = matlab2Epoch(now-siteDB.timezone.gmt_offset/24); %Get time when done in epochtime (similar to argus)
+                out.xyz = [sl.x sl.y metadata.rectz*ones(size(sl.x))]; %Output as a Mx3 matrix to be the same as
+                out.UTM = [sl.x+siteDB.origin.eastings sl.y+siteDB.origin.northings metadata.rectz*ones(size(sl.x))];
+                out.UTMzone = siteDB.UTMzone;
+                UV = findUVnDOF(metadata.geom.betas,out.xyz,metadata.geom); %Its good practise to store the original Image UV data of the shoreline so you don't have to redo the geometry
+                out.UV = reshape(UV,length(out.xyz),2);
+                out.method = sl.method;
+                out.threshold = sl.threshold;
+                out.QA = 0; %Switch to say whether shoreline has been QA'd or not
+                sl = out;
+                
+                %% Plot results
+                if i==1
+                    newfig = figure; %pop up new figure
+                else
+                    figure(newfig)
+                end
+                axheight = 10;
+                width1 = axheight*size(I,2)/size(I,1); %Width of oblique image
+                width2 = axheight*(siteDB.rect.xlim(2)-siteDB.rect.xlim(1))/(siteDB.rect.ylim(2)-siteDB.rect.xlim(1)); %Width of rectified image
+                ver_mar = [0.5 0.5];
+                hor_mar = [0.5 0.5];
+                mid_mar = [0.5 0.5];
+                hor_mar1 = [hor_mar(1) mid_mar(1)+width2+hor_mar(2)];
+                hor_mar2 = [hor_mar(1)+width1+mid_mar(1) hor_mar(2)];
+                width = width1+mid_mar(1)+width2+sum(hor_mar);
+                geomplot(1,1,1,1,width,axheight,hor_mar1,ver_mar,mid_mar)
+                image(I)
+                hold on
+                plot(sl.UV(:,1),sl.UV(:,2),'y')
+                axis off
+                hold off
+                geomplot(1,1,1,1,width,axheight,hor_mar2,ver_mar,mid_mar)
+                imagesc(finalImages.x,finalImages.y,finalImages.timex);
+                hold on
+                plot(sl.xyz(:,1),sl.xyz(:,2),'y')
+                hold off
+                xlabel('Eastings [m]'); ylabel('Northings [m]'); title('Rectified Image');
+                axis xy;axis image; grid on
+                set(gcf,'color','w')
+                %pause(0.3)
+                
+                
+                %%Save data to file
+                %imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
+                %fname_rectified_mat = strrep(rect_name,'.jpg','.mat');
+                %save(fullfile(rect_path,fname_rectified_mat),'xgrid', 'ygrid', 'Iplan', 'metadata')
             end
-            axheight = 10;
-            width1 = axheight*size(I,2)/size(I,1); %Width of oblique image
-            width2 = axheight*(siteDB.rect.xlim(2)-siteDB.rect.xlim(1))/(siteDB.rect.ylim(2)-siteDB.rect.xlim(1)); %Width of rectified image
-            ver_mar = [0.5 0.5];
-            hor_mar = [0.5 0.5];
-            mid_mar = [0.5 0.5];
-            hor_mar1 = [hor_mar(1) mid_mar(1)+width2+hor_mar(2)];
-            hor_mar2 = [hor_mar(1)+width1+mid_mar(1) hor_mar(2)];
-            width = width1+mid_mar(1)+width2+sum(hor_mar);
-            geomplot(1,1,1,1,width,axheight,hor_mar1,ver_mar,mid_mar)
-            image(I)
-            hold on
-            plot(sl.UV(:,1),sl.UV(:,2),'y')
-            axis off
-            hold off            
-            geomplot(1,1,1,1,width,axheight,hor_mar2,ver_mar,mid_mar)
-            imagesc(finalImages.x,finalImages.y,finalImages.timex);
-            hold on
-            plot(sl.xyz(:,1),sl.xyz(:,2),'y')
-            hold off
-            xlabel('Eastings [m]'); ylabel('Northings [m]'); title('Rectified Image');
-            axis xy;axis image; grid on
-            set(gcf,'color','w')
-            %pause(0.3)
-                      
-            
-            %%Save data to file
-            %imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
-            %fname_rectified_mat = strrep(rect_name,'.jpg','.mat');
-            %save(fullfile(rect_path,fname_rectified_mat),'xgrid', 'ygrid', 'Iplan', 'metadata')
-        end     
+        end
     end
 end
