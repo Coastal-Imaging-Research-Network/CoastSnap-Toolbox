@@ -7,6 +7,7 @@ CSPloadPaths %Load data paths
 %First, check if image has already been rectified
 fileparts = CSPparseFilename(data.fname);
 rect_path = strrep(data.pname,'Processed','Rectified');
+rect_path = strrep(rect_path,'Registered','Rectified'); %For Registered images
 rect_name = strrep(data.fname,'snap','plan'); %Rectified is called plan to keep with Argus conventions
 rect_name = strrep(rect_name,'timex','plan'); %For timex images
 rect_name = strrep(rect_name,'jpg','mat'); %Need to load mat file
