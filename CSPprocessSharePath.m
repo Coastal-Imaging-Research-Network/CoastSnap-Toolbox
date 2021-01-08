@@ -5,7 +5,7 @@ user = 'Jake Cosgrove';
 timezone = 'AEST';
 
 %Read files in directory
-EZdir = 'C:\Users\z2273773\Google Drive\CoastSnap\Images\share_link\stockton1';
+EZdir = 'C:\Users\z2273773\Google Drive\CoastSnap\Images\share_link\stockton3';
 files1 = dir([EZdir filesep '*.jpg']);files2 = dir([EZdir filesep '*.jpeg']);
 files = [files1; files2];
 dbfile = fullfile([DB_path filesep 'CoastSnapDB.xlsx']);

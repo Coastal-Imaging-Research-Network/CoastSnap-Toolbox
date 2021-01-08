@@ -42,13 +42,13 @@ end
 width = 30;
 height = 9;
 piesize = 8;
-geomplot(1,1,1,1,width,height,[1.2 piesize],[0.4 1],[0 0])
+geomplot(1,1,1,1,width,height,[1.4 piesize],[0.4 1.2],[0 0])
 plot(dd,cN,'b','linewidth',1)
 hold on
 datetick('x')
-set(gca,'fontsize',8)
-xlabel('Month','fontsize',9)
-ylabel('Cumulative images','fontsize',9)
+set(gca,'fontsize',10)
+xlabel('Month','fontsize',12)
+ylabel('Cumulative images','fontsize',12)
 set(gca,'ygrid','on')
 set(gcf,'color','w')
 xlim([startdate enddate])
@@ -58,20 +58,20 @@ XL = xlim;
 YL = ylim;
 text_title1 = ['Cumulative number of images:'];
 text_title2 = [datestr(startdate,'dd/mm/yyyy') ' - ' datestr(enddate,'dd/mm/yyyy')];
-text(XL(1)+0.1*diff(XL),YL(1)+0.8*diff(YL),text_title1,'fontsize',9,'fontweight','bold')
-text(XL(1)+0.1*diff(XL),YL(1)+0.71*diff(YL),text_title2,'fontsize',9,'fontweight','bold')
+text(XL(1)+0.1*diff(XL),YL(1)+0.8*diff(YL),text_title1,'fontsize',14,'fontweight','bold')
+text(XL(1)+0.1*diff(XL),YL(1)+0.71*diff(YL),text_title2,'fontsize',14,'fontweight','bold')
 
 
 geomplot(1,1,1,1,width,height,[width-piesize 0],[0.4 1],[0 0])
 h1=pie(subtypes_count);
-h1(2).FontSize = 8;
-h1(4).FontSize = 8;
-h1(6).FontSize = 8;
+h1(2).FontSize = 10;
+h1(4).FontSize = 10;
+h1(6).FontSize = 10;
 if length(h1)>=8
-    h1(8).FontSize = 8;
+    h1(8).FontSize = 10;
 end
 h = legend(subtypes,'Location','southoutside')%,'Orientation','horizontal');
-h.FontSize = 7;
+h.FontSize = 10;
 title(h,'Submission type');
 %title('Image submission type')
 

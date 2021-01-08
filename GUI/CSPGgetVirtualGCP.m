@@ -24,4 +24,5 @@ else
     XYZvirtual = findXYZ6dof(UVvirtual(1),UVvirtual(2),0,metadata.geom.betas,metadata.geom.lcp);
     UTMvirtual = [XYZvirtual(1)+siteDB.origin.eastings XYZvirtual(2)+siteDB.origin.northings 0];
     msgbox(['Virtual GCP coordinate in UTM is (' num2str(UTMvirtual(1),'%0.2f') 'm, ' num2str(UTMvirtual(2),'%0.2f') 'm, 0m)'],'Virtual GCP Coordinate');
+    disp(['Virtual GCP coordinate in UTM is (' num2str(UTMvirtual(1),'%0.2f') 'm, ' num2str(UTMvirtual(2),'%0.2f') 'm, 0m)'])
 end

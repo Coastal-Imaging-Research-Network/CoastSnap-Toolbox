@@ -21,6 +21,11 @@ set(handles.oblq_image, 'UserData',data);
 if nargin==1 %If this is being called from the load image button
     [fname,pname]=uigetfile([data.path filesep '*.jpg'],'Select CoastSnap Image .jpg file from Processed Folder');
 end
+
+if isnumeric(fname)|isnumeric(pname)
+   data=[];
+   error('No file selected!!')
+end
 I = imread(fullfile(pname,fname)); %Read image
 disp('Image loaded to GUI')
 axes(handles.oblq_image) %Plot to oblq image axis
