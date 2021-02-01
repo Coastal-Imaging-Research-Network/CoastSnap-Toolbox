@@ -125,10 +125,18 @@ else
             %pause(0.3)
                       
             
-            %%Save data to file
-            %imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
-            %fname_rectified_mat = strrep(rect_name,'.jpg','.mat');
-            %save(fullfile(rect_path,fname_rectified_mat),'xgrid', 'ygrid', 'Iplan', 'metadata')
+            %%Save rectified data to file
+            imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
+            fname_rectified_mat = strrep(rect_name,'.jpg','.mat');
+            save(fullfile(rect_path,fname_rectified_mat),'xgrid', 'ygrid', 'Iplan', 'metadata')
+            
+            %Save shoreline to file
+            savedir = [shoreline_path filesep fileparts.site filesep fileparts.year filesep];
+            savefname = strrep(newfname,'snap','shoreline');
+            savefname = strrep(savefname,'timex','shoreline');
+            savefname = strrep(savefname,'.jpg','.mat');
+            save(fullfile(savedir,savefname),'sl')
+            disp('Shoreline saved to DB!')
         end     
     end
 end
