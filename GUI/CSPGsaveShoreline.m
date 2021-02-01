@@ -14,6 +14,7 @@ else
     switch button
         case 'Yes'
             sl = data_plan.sl;
+            sl.QA = 1; %By saying yes you are QAing the shoreline
             savedir = [shoreline_path filesep fileparts.site filesep fileparts.year filesep];
             savefname = strrep(data.fname,'snap','shoreline');
             savefname = strrep(savefname,'timex','shoreline');
