@@ -21,10 +21,25 @@ Ialternative = find(strcmp(txt(2:end,4),siteDB.timezone.alternative.name)); %e.g
 imtimesGMT(Ialternative) = imtimesGMT(Ialternative)-siteDB.timezone.alternative.gmt_offset/24; %Subtract the offset in hours to convert to default
 imtimesLocal = imtimesGMT+siteDB.timezone.gmt_offset/24;
 
+%Get images coming from App not listed in DB
+[epochtimes,filenames,~,~] = CSPgetImageList(site,'Processed');
+I = NaN(length(epochtimes),1);
+for i = 1:length(epochtimes)
+    Iapp = strfind(filenames(i).name,'+'); %If taken by app, filename has a + in it instead of AEST
+    if isempty(Iapp)
+        I(i) = 0;
+    else
+        I(i) = 1;
+    end
+end
+Iapp = find(I==1);
+apptimes = CSPepoch2LocalMatlab(epochtimes(Iapp),siteDB.timezone.gmt_offset);
+
 dd = startdate:enddate;
 for i = 1:length(dd)
-J = find(floor(imtimesLocal)==dd(i)&strcmp(txt(2:end,1),site));
-N(i) = length(J);
+J1 = find(floor(imtimesLocal)==dd(i)&strcmp(txt(2:end,1),site));
+J2=find(floor(apptimes)==dd(i));
+N(i) = length(J1)+length(J2);
 end
 
 cN = cumsum(N);
@@ -32,13 +47,14 @@ cN = cumsum(N);
 %cN(1) = 0;
 
 %Get submission types
-subtypes = {'Email','Facebook','Twitter','Instagram'};
+subtypes = {'Email','Facebook','Twitter','Instagram','App'};
 subtypes_count = NaN(length(subtypes),1);
-for i = 1:length(subtypes)
+for i = 1:length(subtypes)-1
     J = find(strcmp(txt(2:end,6),subtypes{i})&strcmp(txt(2:end,1),site));
     subtypes_count(i) = length(J);
 end
-    
+subtypes_count(end) = length(apptimes);
+
 width = 30;
 height = 9;
 piesize = 8;
