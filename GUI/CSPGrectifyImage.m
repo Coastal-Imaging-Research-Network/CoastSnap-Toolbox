@@ -194,8 +194,8 @@ if go==1 %If hasn't been previously rectified
     metadata.geom.knownFlags = globs.knownFlags;
     metadata.geom.knowns = globs.knowns;
     
-    if RMSE > 10
-        msgbox(['RMSE might be too large (' num2str(RMSE,'%0.1f') 'pixels) and hence result was not saved. Consider rectifying your image again. tor educe the error'])
+    if RMSE > siteDB.rect.accuracylim
+        msgbox(['RMSE might be too large (' num2str(RMSE,'%0.1f') 'pixels) and hence result was not saved. Consider rectifying your image again to reduce the error'])
     else
         %Save data to file
         imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
