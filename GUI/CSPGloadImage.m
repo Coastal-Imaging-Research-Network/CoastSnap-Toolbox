@@ -72,19 +72,19 @@ sl_fname = strrep(fname,'snap','shoreline');
 sl_fname = strrep(sl_fname,'timex','shoreline'); %To deal with timex images as well
 sl_fname = strrep(sl_fname,'.jpg','.mat');
 if exist(fullfile(sldir,sl_fname),'file')
-    load(fullfile(sldir,sl_fname));
+    shoreline = load(fullfile(sldir,sl_fname));
     axes(handles.plan_image)
-    if isfield(sl,'QA')&&sl.QA==0
+    if isfield(shoreline.sl,'QA')&&shoreline.sl.QA==0
         sl_color = 'r'; %Make shoreline colour red if it is nonQA'd
     else
         sl_color = 'y';
     end
         
-    sl_handle_plan = plot(sl.xyz(:,1),sl.xyz(:,2),sl_color,'linewidth',2);
+    sl_handle_plan = plot(shoreline.sl.xyz(:,1),shoreline.sl.xyz(:,2),sl_color,'linewidth',2);
     axes(handles.oblq_image)
-    sl_handle_oblq = plot(sl.UV(:,1),sl.UV(:,2),sl_color,'linewidth',2);
+    sl_handle_oblq = plot(shoreline.sl.UV(:,1),shoreline.sl.UV(:,2),sl_color,'linewidth',2);
     data_plan.sl_handle_plan = sl_handle_plan;
-    data_plan.sl = sl;
+    data_plan.sl = shoreline.sl;
     data.sl_handle_oblq = sl_handle_oblq;
     set(handles.plan_image,'UserData',data_plan) %Store rectified info in userdata of plan_image
 end
