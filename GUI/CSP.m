@@ -22,7 +22,7 @@ function varargout = CSP(varargin)
 
 % Edit the above text to modify the response to help CSP
 
-% Last Modified by GUIDE v2.5 26-May-2020 20:22:13
+% Last Modified by GUIDE v2.5 28-Feb-2021 18:14:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -388,3 +388,19 @@ function getVirtualGCP_Callback(hObject, eventdata, handles)
 
 CSPGgetVirtualGCP(handles)
 
+
+
+% --------------------------------------------------------------------
+function Menu_Advanced_Callback(hObject, eventdata, handles)
+% hObject    handle to Menu_Advanced (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function makeAnimation_Callback(hObject, eventdata, handles)
+% hObject    handle to makeAnimation (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+CSPGmakeBeachWidthAnimation(handles)
