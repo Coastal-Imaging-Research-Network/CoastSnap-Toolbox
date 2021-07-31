@@ -67,7 +67,8 @@ for j = 1:length(transect_nos)
     end
 end
 %Tidally-correct data
-bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
+%bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
+bw_corr = (0-sl.xyz(1,3))/slope; %Now use MSL to keep it consistent
 p(1,:) = p(1,:)-bw_corr;
 
 %Now do present shoreline
@@ -99,7 +100,8 @@ for j = 1:length(transect_nos)
     end
 end
 %Tidally-correct data
-bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
+%bw_corr = (data.tide_level-sl.xyz(1,3))/slope;
+bw_corr = (0-sl.xyz(1,3))/slope; %Now use MSL to keep it consistent
 p(2,:) = p(2,:)-bw_corr;
 
 h = legend(imtimes,'location','NorthEast');

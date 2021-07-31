@@ -94,7 +94,7 @@ else
             sl = out;
             
             %% Plot results
-            if i==1
+            if ~exist('newfig')
                 newfig = figure; %pop up new figure
             else
                 figure(newfig)

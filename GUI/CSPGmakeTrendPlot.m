@@ -45,6 +45,15 @@ colors = distinguishable_colors(length(Icommon)); %Colors of shorelines
 imtimes = cell(length(Icommon),1);
 p =NaN(length(Icommon),length(transect_nos)); %beach width matrix to calculate alongshore-average beach width based on defined transects
 
+%If more than 8 shorelines, plot shorelines differently
+if length(Icommon)>8
+    colors = ones(length(Icommon),3)*0; %Make all colours black
+    colors2 = distinguishable_colors(4)
+    colors(1,:) = colors2(1,:);
+    colors(end,:) = colors2(end,:);
+end
+
+%Plot shorelines
 for i = 1:length(Icommon)
     imdata = CSPparseFilename(navfiles(Icommon(i)).name);
     imtimes{i} = datestr(CSPepoch2LocalMatlab(str2num(imdata.epochtime),data.siteDB.timezone.gmt_offset),'dd/mm/yyyy');
@@ -52,7 +61,12 @@ for i = 1:length(Icommon)
     slfile = strrep(navfiles(Icommon(i)).name,'snap','shoreline');
     slfile = strrep(slfile,'timex','shoreline');
     slfile = strrep(slfile,'.jpg','.mat');
-    load(fullfile(sldir,slfile));
+    if exist(fullfile(sldir,slfile)) %Catch in case shoreline was mapped on registered image
+        load(fullfile(sldir,slfile));
+    else
+        slfile = strrep(slfile,'.mat','_registered.mat');
+        load(fullfile(sldir,slfile));
+    end
     UV = findUVnDOF(metadata.geom.betas,sl.xyz,metadata.geom);
     UV = reshape(UV,length(sl.xyz),2);
     plot(UV(:,1),UV(:,2),'linewidth',1,'color',colors(i,:))
@@ -61,16 +75,20 @@ for i = 1:length(Icommon)
         if ~isempty(x_int)
             p(i,j) = sqrt((x_int-SLtransects.x(1,transect_nos(j)))^2+(y_int-SLtransects.y(1,transect_nos(j)))^2);
         else
-            disp(['Warning: shoreline does not intersect with transect number ' num2str(transect_nos(j))])
+            disp(['Warning: shoreline does not intersect with transect number ' num2str(transect_nos(j)) ' for date ' imtimes{i}])
         end
     end
     %Tidally-correct data
-    bw_corr = (data.tide_level-sl.xyz(1,3))/slope; %Slope taken from characteristic beach slope in CoastSnapDB 
+    %bw_corr = (data.tide_level-sl.xyz(1,3))/slope; %Slope taken from characteristic beach slope in CoastSnapDB 
+    bw_corr = (0-sl.xyz(1,3))/slope; %now project to MSL instead of tide level from first image. %Slope taken from characteristic beach slope in CoastSnapDB 
     p(i,:) = p(i,:)-bw_corr;
 end
-h = legend(imtimes,'location','NorthEast');
-h.FontSize = 8;
-   
+
+if length(Icommon)<8  
+    h = legend(imtimes,'location','NorthEast');
+    h.FontSize = 8;    
+end
+  
 %Plot time-series below
 ver_mar2 = [ver_mar(1)+ax_height+plot_gap plot_bot];
 hor_mar2 = [1.5 width/2];
@@ -89,7 +107,12 @@ XL1 = min(dates)-7;
 XL2 = max(dates)+7;
 xlim([XL1 XL2])
 ylim([YL1 YL2])
-datetick('x','dd/mm','keeplimits')
+if XL2-XL1<180
+    datetick('x','dd/mm','keeplimits')
+else
+    datetick('x','mm/yy','keeplimits')
+end
+xtickangle(0); %Stop latest version (Matlab R2021a) from automatically rotating tick 45 degrees
 set(gcf,'color','w')
 set(gca,'fontsize',9)
 ylabel('Beach width (m)','fontsize',12)
@@ -100,10 +123,18 @@ XL = xlim;
 YL = ylim;
 if alpha(1)>0
     text(XL(2)+0.1*diff(XL),YL(1)+0.7*diff(YL),'Beach width trend','fontsize',20,'color','b','fontname','Berlin Sans FB');
-    text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),['+' num2str(alpha(1)*7,'%0.2f') ' metres/week'],'fontsize',20,'color','g','fontname','Berlin Sans FB')
+    if (XL2-XL1)<365.25
+        text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),['+' num2str(alpha(1)*7,'%0.2f') ' metres/week'],'fontsize',20,'color','g','fontname','Berlin Sans FB')
+    else
+        text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),['+' num2str(alpha(1)*365.25,'%0.2f') ' metres/year'],'fontsize',20,'color','g','fontname','Berlin Sans FB')
+    end
 else
     text(XL(2)+0.1*diff(XL),YL(1)+0.7*diff(YL),'Beach width trend','fontsize',20,'color','b','fontname','Berlin Sans FB');
-    text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(alpha(1)*7,'%0.2f') ' metres/week'],'fontsize',20,'color','r','fontname','Berlin Sans FB')
+    if (XL2-XL1)<365.25
+        text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(alpha(1)*7,'%0.2f') ' metres/week'],'fontsize',20,'color','r','fontname','Berlin Sans FB')
+    else
+        text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(alpha(1)*365.25,'%0.2f') ' metres/year'],'fontsize',20,'color','r','fontname','Berlin Sans FB')
+    end
 end
     
 %Put coastsnap logo
