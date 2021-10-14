@@ -9,6 +9,8 @@ transect_nos = data.siteDB.sl_settings.transect_averaging_region; %Transects to 
 trendinterval = str2num(get(handles.trendinterval,'String')); %In days (usually 6 weeks)
 trendinterval_seconds = trendinterval*3600*24;
 slope = data.siteDB.sl_settings.beach_slope;
+%Prompt user to select output path to save frames
+output_path = uigetdir(data.path, 'Select output directory for beach width animation frames and time-series data');
 
 %% First Calculate BW time-series
 
@@ -35,8 +37,11 @@ for i = 1:length(Icommon)
     load(fullfile(slpaths(Icommon(i)).name,slfiles(Icommon(i)).name))
     for j = 1:length(transect_nos)
         [x_int,y_int] = polyxpoly(sl.xyz(:,1),sl.xyz(:,2),SLtransects.x(:,transect_nos(j)),SLtransects.y(:,transect_nos(j)));
+        if length(x_int)>1
+            warning('More than 1 intersection point detected between shoreline and transect')
+        end
         if ~isempty(x_int)
-            p(i,j) = sqrt((x_int-SLtransects.x(1,transect_nos(j)))^2+(y_int-SLtransects.y(1,transect_nos(j)))^2);
+            p(i,j) = sqrt((x_int(1)-SLtransects.x(1,transect_nos(j)))^2+(y_int(1)-SLtransects.y(1,transect_nos(j)))^2); %If more than 1 intersection, choose the most landward
         else
             %disp(['Warning: shoreline does not intersect with transect number ' num2str(transect_nos(j))])
         end
@@ -64,10 +69,10 @@ ax1 = gca;
 image(I)
 axis off
 
-Icut = find(navepochs>slepochs(Icommon(1)));
-navepochs = data.navigation.epochs(Icut);
-navfiles = data.navigation.files(Icut);
-navpaths = data.navigation.paths(Icut);
+%Icut = find(navepochs>slepochs(Icommon(1)));
+%navepochs = data.navigation.epochs(Icut);
+%navfiles = data.navigation.files(Icut);
+%navpaths = data.navigation.paths(Icut);
 
 if ismember(navepochs(1),slepochs)
     imdata = CSPparseFilename(navfiles(1).name);
@@ -107,6 +112,10 @@ text(XL(2)+0.1*diff(XL),YL(1)+0.7*diff(YL),'Beach width','fontsize',20,'color','
 bw_text = text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(bw_now,'%0.1f') ' metres'],'fontsize',20,'color','r','fontname','Berlin Sans FB');
 ylim(YL)
 
+%Save beachwidth time-series data to csv file in output directory
+M = [datevec(dates) av_bw' f(dates)]; %8-column matrix of dates, alongshore-averaged beach width and smoothed beach width
+writematrix(M,fullfile(output_path,['beachwidth_timeseries_' data.site '.csv']))
+
 %Put coastsnap logo
 Ics = imread('CoastSnap Logo Portrait.png');
 ax_height3 = 0.7*ax_height2;
@@ -116,7 +125,7 @@ hor_mar3 = [width-hor_mar(2)-ax_width hor_mar(2)];
 geomplot(1,1,1,1,width,ax_height3,hor_mar3,ver_mar3,mid_mar)
 image(Ics)
 axis off
-print(fig,'frame_001.jpg','-djpeg','-r300')
+print(fig,fullfile(output_path,'frame_001.jpg'),'-djpeg','-r300')
 
 %Now loop over other images
 for i = 2:navepochs %Loop over all images, not just images with shorelines
@@ -147,5 +156,5 @@ for i = 2:navepochs %Loop over all images, not just images with shorelines
     bw_now = f(CSPepoch2LocalMatlab(navepochs(i),data.siteDB.timezone.gmt_offset));
     delete(bw_text)
     bw_text = text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(bw_now,'%0.1f') ' metres'],'fontsize',20,'color','r','fontname','Berlin Sans FB');  
-    print(fig,['frame_' num2str(i,'%03.0f') '.jpg'],'-djpeg','-r300')
+    print(fig,fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-djpeg','-r300')
 end
