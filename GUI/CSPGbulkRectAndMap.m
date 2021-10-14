@@ -101,7 +101,7 @@ else
             end
             axheight = 10;
             width1 = axheight*size(I,2)/size(I,1); %Width of oblique image
-            width2 = axheight*(siteDB.rect.xlim(2)-siteDB.rect.xlim(1))/(siteDB.rect.ylim(2)-siteDB.rect.xlim(1)); %Width of rectified image
+            width2 = axheight*(siteDB.rect.xlim(2)-siteDB.rect.xlim(1))/(siteDB.rect.ylim(2)-siteDB.rect.ylim(1)); %Width of rectified image
             ver_mar = [0.5 0.5];
             hor_mar = [0.5 0.5];
             mid_mar = [0.5 0.5];
