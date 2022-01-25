@@ -22,7 +22,7 @@ function varargout = CSP(varargin)
 
 % Edit the above text to modify the response to help CSP
 
-% Last Modified by GUIDE v2.5 28-Feb-2021 18:14:57
+% Last Modified by GUIDE v2.5 26-Jan-2022 10:06:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -404,3 +404,12 @@ function makeAnimation_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 CSPGmakeBeachWidthAnimation(handles)
+
+
+% --------------------------------------------------------------------
+function make_transect_files_Callback(hObject, eventdata, handles)
+% hObject    handle to make_transect_files (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+CSPGmakeTransectFiles(handles)
