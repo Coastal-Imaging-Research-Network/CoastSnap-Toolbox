@@ -1,6 +1,6 @@
 %Insert site-specific data here
 site = 'blacksmiths'
-photoshoptemp_dir = 'C:\Users\z2273773\Desktop\blacksmiths\registered2294'; %Name of directory where you have saved your registered images from photoshop
+photoshoptemp_dir = 'C:\Users\z2273773\Desktop\manly\New folder'; %Name of directory where you have saved your registered images from photoshop
 
 
 %Now do processing
@@ -23,7 +23,8 @@ XL = xlim;
 YL = ylim;
 matlablocal = CSPepoch2LocalMatlab(str2num(out.epochtime),siteDB.timezone.gmt_offset);
 tidelevel = CSPgetTideLevel(str2num(out.epochtime),site);
-txt = ['Date: ' datestr(matlablocal,'yyyy/mm/dd') ' Time: ' datestr(matlablocal,'HH:MM') ' Contributor: ' out.user ' Tide level: ' num2str(tidelevel,'%0.2f') 'm AHD'];
+user = strrep(out.user,'_','');
+txt = ['Date: ' datestr(matlablocal,'yyyy/mm/dd') ' Time: ' datestr(matlablocal,'HH:MM') ' Contributor: ' user ' Tide level: ' num2str(tidelevel,'%0.2f') 'm AHD'];
 h=text(XL(1)+0.02*diff(XL),YL(1)+0.02*diff(YL),txt,'color',0.2*[1 1 1]);
 h.HorizontalAlignment = 'left';
 h.FontSize = 12;

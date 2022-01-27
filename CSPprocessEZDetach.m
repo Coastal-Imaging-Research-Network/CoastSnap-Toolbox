@@ -2,7 +2,7 @@
 CSPloadPaths
 
 %Set timezone
-timezone = 'AEST';
+timezone = 'AEDT';
 
 
 %Read files in directory

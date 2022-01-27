@@ -6,6 +6,8 @@ matlabtimes = epoch2Matlab(epochtimes)+siteDB.timezone.gmt_offset/24; %Convert t
 matlabtimes_vec = datevec(matlabtimes);
 I = find(ismember(matlabtimes_vec(:,4),[7:18])); %Only use images between 8am and 6pm
 matlabtimes = matlabtimes(I);
+filenames = filenames(I);
+filepaths = filepaths(I);
 matlabdays = matlabday1:matlabday2;
 
 for i = 1:length(matlabdays)

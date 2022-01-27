@@ -20,7 +20,7 @@ if exist(fullfile(sldir,sl_fname),'file')
             disp('Shoreline chosen to not be mapped')
         case 'Yes'
             go = 1;
-    end  
+    end
 end
 
 if go ==1
@@ -31,8 +31,8 @@ if go ==1
     
     %Remove any existing shorelines plotted on the figure
     if exist('data_plan.sl_handle_plan')
-     
-    delete(data_plan.sl_handle_oblq);
+        
+        delete(data_plan.sl_handle_oblq);
     end
     
     %Load transect dir from DB
@@ -42,37 +42,39 @@ if go ==1
     addpath('../Shoreline-Mapping-Toolbox') %Relevant file (mapShorelineCCD.m) found in shoreline mapping toolbox
     type = 'CCD'; %Only consider CCD here
     if strcmp(type,'CCD')
-       sl = mapShorelineCCD(data_plan.xgrid,data_plan.ygrid,data_plan.Iplan,SLtransects,0,0); %Turn edit and plot mode off in GUI
-        elseif strcmp(type,'HUE')
-       sl = mapShorelineHUE(data_plan.xgrid,data_plan.ygrid,data_plan.Iplan,SLtransects,0,0);
+        sl = mapShorelineCCD(data_plan.xgrid,data_plan.ygrid,data_plan.Iplan,SLtransects,0,0); %Turn edit and plot mode off in GUI
+    elseif strcmp(type,'HUE')
+        sl = mapShorelineHUE(data_plan.xgrid,data_plan.ygrid,data_plan.Iplan,SLtransects,0,0);
     end
     
-    %Add eastings and northings
-    out.whenDone = matlab2Epoch(now-siteDB.timezone.gmt_offset/24); %Get time when done in epochtime (similar to argus)
-    out.xyz = [sl.x sl.y metadata.rectz*ones(size(sl.x))]; %Output as a Mx3 matrix to be the same as
-    out.UTM = [sl.x+siteDB.origin.eastings sl.y+siteDB.origin.northings metadata.rectz*ones(size(sl.x))];
-    out.UTMzone = siteDB.UTMzone;
-    UV = findUVnDOF(metadata.geom.betas,out.xyz,metadata.geom); %Its good practise to store the original Image UV data of the shoreline so you don't have to redo the geometry
-    out.UV = reshape(UV,length(out.xyz),2);
-    out.method = sl.method;
-    out.threshold = sl.threshold;
-    out.QA = 1; %Boolean to say whether data has been QA'd or not (for autoshoreline mapping)
-    sl = out;
-    data_plan.sl = sl;
-    
-    
-    %Plot data on both oblq and plan image
-    axes(handles.plan_image)
-    hold on
-    sl_handle_plan = plot(sl.xyz(:,1),sl.xyz(:,2),'y','linewidth',4);
-    data_plan.sl_handle_plan = sl_handle_plan;
-    axes(handles.oblq_image)
-    hold on
-    sl_handle_oblq = plot(sl.UV(:,1),sl.UV(:,2),'y','linewidth',4);
-    data.sl_handle_oblq = sl_handle_oblq;
-
-    %Update user data
-    set(handles.plan_image,'UserData',data_plan);
-    set(handles.oblq_image,'UserData',data);
+    if ~isempty(sl.x) %if you couldnt get a shoreline
+          
+        %Add eastings and northings
+        out.whenDone = matlab2Epoch(now-siteDB.timezone.gmt_offset/24); %Get time when done in epochtime (similar to argus)
+        out.xyz = [sl.x sl.y metadata.rectz*ones(size(sl.x))]; %Output as a Mx3 matrix to be the same as
+        out.UTM = [sl.x+siteDB.origin.eastings sl.y+siteDB.origin.northings metadata.rectz*ones(size(sl.x))];
+        out.UTMzone = siteDB.UTMzone;
+        UV = findUVnDOF(metadata.geom.betas,out.xyz,metadata.geom); %Its good practise to store the original Image UV data of the shoreline so you don't have to redo the geometry
+        out.UV = reshape(UV,length(out.xyz),2);
+        out.method = sl.method;
+        out.threshold = sl.threshold;
+        out.QA = 1; %Boolean to say whether data has been QA'd or not (for autoshoreline mapping)
+        sl = out;
+        data_plan.sl = sl;
+        
+        
+        %Plot data on both oblq and plan image
+        axes(handles.plan_image)
+        hold on
+        sl_handle_plan = plot(sl.xyz(:,1),sl.xyz(:,2),'y','linewidth',4);
+        data_plan.sl_handle_plan = sl_handle_plan;
+        axes(handles.oblq_image)
+        hold on
+        sl_handle_oblq = plot(sl.UV(:,1),sl.UV(:,2),'y','linewidth',4);
+        data.sl_handle_oblq = sl_handle_oblq;
+        
+        %Update user data
+        set(handles.plan_image,'UserData',data_plan);
+        set(handles.oblq_image,'UserData',data);
+    end
 end
-  

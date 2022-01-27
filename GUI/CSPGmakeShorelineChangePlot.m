@@ -57,7 +57,7 @@ slfile = strrep(slfile,'.jpg','.mat');
 load(fullfile(sldir,slfile));
 UV = findUVnDOF(metadata.geom.betas,sl.xyz,metadata.geom);
 UV = reshape(UV,length(sl.xyz),2);
-plot(UV(:,1),UV(:,2),'linewidth',1,'color',colors(1,:))
+plot(UV(:,1),UV(:,2),'linewidth',1.5,'color',colors(1,:))
 for j = 1:length(transect_nos)
     [x_int,y_int] = polyxpoly(sl.xyz(:,1),sl.xyz(:,2),SLtransects.x(:,transect_nos(j)),SLtransects.y(:,transect_nos(j)));
     if ~isempty(x_int)
@@ -81,7 +81,7 @@ slfile = strrep(slfile,'.jpg','.mat');
 load(fullfile(sldir,slfile));
 UV = findUVnDOF(metadata.geom.betas,sl.xyz,metadata.geom);
 UV = reshape(UV,length(sl.xyz),2);
-plot(UV(:,1),UV(:,2),'linewidth',1,'color',colors(2,:))
+plot(UV(:,1),UV(:,2),'linewidth',1.5,'color',colors(2,:))
 for j = 1:length(transect_nos)
     [x_int,y_int] = polyxpoly(sl.xyz(:,1),sl.xyz(:,2),SLtransects.x(:,transect_nos(j)),SLtransects.y(:,transect_nos(j)));
     if ~isempty(x_int)
@@ -105,7 +105,7 @@ bw_corr = (0-sl.xyz(1,3))/slope; %Now use MSL to keep it consistent
 p(2,:) = p(2,:)-bw_corr;
 
 h = legend(imtimes,'location','NorthEast');
-h.FontSize = 8;
+h.FontSize = 10;
 
     
 %Plot time-series below

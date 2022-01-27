@@ -14,19 +14,19 @@ rect_name = strrep(rect_name,'timex','plan'); %For timex images
 if ~exist(fullfile(rect_path,rect_name),'file')
     ButtonName = warndlg('Image has not been rectified. To make a transect file you need to first rectify an image','Image has not been rectified');
 else
-    disp('Welcome to the Transect File Creator. To start, click on the area in the rectified image on right that evenly spans the beach and water. This forms the region of interest where shorelines can be detected.')
+    helpdlg('Welcome to the Transect File Creator. To start, click on the area in the rectified image on right that evenly spans the beach and water. This forms the region of interest where shorelines can be detected.','Transect File Editor')
     %h = impoly(handles.plan_image,'closed',1);
     %ROI = getPosition(h);
     ROI = drawpolygon(handles.plan_image,'InteractionsAllowed','none'); %Use drawpolygon as it is cleaner. Might have some issues if people dont have certain toolboxes or matlab versions?
-    disp('Now click on area that approximates the coastline, start with the area closest to the station and moving away to the farfield. This will be used to determine the orientation of the transects.')
+    helpdlg('Now click on area that approximates the coastline, start with the area closest to the station and moving away to the farfield. This will be used to determine the orientation of the transects.')
     %h = impoly(handles.plan_image,'closed',0);
     %sl = getPosition(h);
-    sl = drawpolyline(handles.plan_image,'Color','Green','InteractionsAllowed','none');
-    marker_dist = 5; %Spacings of the transects. Set nominally to 5m but could be higher resolution
+    sl = drawpolyline(handles.plan_image,'Color','Green');
+    marker_dist = 5; %Spacings of the transects. Set niminally to 5m but could 
     %x = sl(:,1)';
     %y = sl(:,2)';
-    x = sl.Position(:,1)'; %For when using drawpolyline
-    y = sl.Position(:,2)'; %For when using drawpolyline
+    x = sl.Position(:,1)';
+    y = sl.Position(:,2)';
     dist_from_start = cumsum( [0, sqrt((x(2:end)-x(1:end-1)).^2 + (y(2:end)-y(1:end-1)).^2)] );
     marker_locs = 0 : marker_dist : dist_from_start(end);   %replace with specific distances if desired
     marker_indices = interp1( dist_from_start, 1 : length(dist_from_start), marker_locs);
@@ -72,8 +72,6 @@ else
     X2ends(:,I) = [];
     Y2ends(:,I) = [];
     marker_locs(I) = [];
-    plot(X2ends(1,:),Y2ends(1,:),'ro')
-    plot(X2ends(2,:),Y2ends(2,:),'bo')
     SLtransects.x = X2ends;
     SLtransects.y = Y2ends;
     SLtransects.alongshore_distances = marker_locs;

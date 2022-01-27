@@ -86,7 +86,7 @@ h1(6).FontSize = 10;
 if length(h1)>=8
     h1(8).FontSize = 10;
 end
-h = legend(subtypes,'Location','southoutside')%,'Orientation','horizontal');
+h = legend(subtypes,'Location','southoutside');%,'Orientation','horizontal');
 h.FontSize = 10;
 title(h,'Submission type');
 %title('Image submission type')
@@ -98,5 +98,6 @@ disp(['Most popular day of week is ' num2str(mode(weekday(imtimesLocal(J))))])
 disp(['Most popular time of day is ' num2str(mode(M(:,4)))])
 disp(['Total number of submissions is ' num2str(cN(end))])
 disp(['Average number of submissions per week is ' num2str(7*cN(end)/((1+(enddate-startdate))),'%0.1f')])
+
 
 

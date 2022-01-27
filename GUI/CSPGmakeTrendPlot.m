@@ -63,7 +63,7 @@ for i = 1:length(Icommon)
     slfile = strrep(slfile,'.jpg','.mat');
     if exist(fullfile(sldir,slfile)) %Catch in case shoreline was mapped on registered image
         load(fullfile(sldir,slfile));
-    else
+    elseif
         slfile = strrep(slfile,'.mat','_registered.mat');
         load(fullfile(sldir,slfile));
     end
