@@ -14,11 +14,13 @@ rect_name = strrep(rect_name,'timex','plan'); %For timex images
 if ~exist(fullfile(rect_path,rect_name),'file')
     ButtonName = warndlg('Image has not been rectified. To make a transect file you need to first rectify an image','Image has not been rectified');
 else
-    disp('Welcome to the Transect File Creator. To start, click on the area in the rectified image on right that evenly spans the beach and water. This forms the region of interest where shorelines can be detected.')
+    disp('1) Welcome to the Transect File Creator. To start, click on the area in the rectified image on right that evenly spans the beach and water. This forms the region of interest where shorelines can be detected.')
+    title(handles.plan_image,'Draw region of interest, equally between sand/water')
     %h = impoly(handles.plan_image,'closed',1);
     %ROI = getPosition(h);
     ROI = drawpolygon(handles.plan_image,'InteractionsAllowed','none'); %Use drawpolygon as it is cleaner. Might have some issues if people dont have certain toolboxes or matlab versions?
-    disp('Now click on area that approximates the coastline, start with the area closest to the station and moving away to the farfield. This will be used to determine the orientation of the transects.')
+    title(handles.plan_image,'Draw representative shoreline (starting from nearest station)')
+    disp('2) Now draw a line that approximates the coastline, starting closest to the station and moving away to the farfield. This will be used to determine the orientation of the transects.')
     %h = impoly(handles.plan_image,'closed',0);
     %sl = getPosition(h);
     sl = drawpolyline(handles.plan_image,'Color','Green','InteractionsAllowed','none');
@@ -79,11 +81,12 @@ else
     SLtransects.alongshore_distances = marker_locs;
     
     %Save transect file?
-    button = questdlg('Do you want to save this transect file?','Save transect file?','Yes','No','No');
+    button = questdlg('Do you want to save this transect file? Double-check that blue circles indicate seaward extents (otherwise there is a bug)','Save transect file?','Yes','No','No');
     switch button
         case 'Yes'
-            savefname = inputdlg('Please write filename of transect file','Transect file name');
+            savefname = inputdlg('Please write filename of transect file. The standard convention for this filename is "SLtransects_(sitename)"','Transect file name');
             save([transect_dir filesep savefname{1} '.mat'],'SLtransects')
+            msgbox(['Transect file saved!! There are ' num2str(size(X2ends,2)) ' transects in this transect file'])
             disp('Transect file has been saved! Please make sure you update the database accordingly')
     end
 end
