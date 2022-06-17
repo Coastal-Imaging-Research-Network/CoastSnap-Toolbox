@@ -54,7 +54,13 @@ sldir = fullfile(shoreline_path,imdata.site,imdata.year);
 slfile = strrep(navfiles(Icommon(Iprev)).name,'snap','shoreline');
 slfile = strrep(slfile,'timex','shoreline');
 slfile = strrep(slfile,'.jpg','.mat');
-load(fullfile(sldir,slfile));
+if exist(fullfile(sldir,slfile)) %Catch in case shoreline was mapped on registered image
+    load(fullfile(sldir,slfile));
+else
+    slfile = strrep(slfile,'.mat','_registered.mat');
+    load(fullfile(sldir,slfile));
+end
+%load(fullfile(sldir,slfile));
 UV = findUVnDOF(metadata.geom.betas,sl.xyz,metadata.geom);
 UV = reshape(UV,length(sl.xyz),2);
 plot(UV(:,1),UV(:,2),'linewidth',1.5,'color',colors(1,:))

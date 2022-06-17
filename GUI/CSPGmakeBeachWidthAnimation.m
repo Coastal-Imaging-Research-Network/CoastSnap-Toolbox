@@ -101,6 +101,8 @@ f = fit(dates',av_bw','smoothingspline','SmoothingParam',0.1);
 plot(dates,f(dates),'color','k','linewidth',1)
 xlim([min(dates) max(dates)])
 datetick('x','keeplimits')
+set(gca,'ygrid','on')
+set(gca,'xgrid','on')
 ylabel('Beach width (m)','fontsize',11)
 YL = ylim;
 XL = xlim;

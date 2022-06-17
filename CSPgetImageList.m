@@ -20,6 +20,8 @@ CSPloadPaths
 %mat files
 folders = dir(fullfile(image_path,site,type));
 epochtimes = [];
+%filenames = [];
+%filepaths = [];
 p = 1;
 for i = 1:length(folders)
     if folders(i).isdir&&length(folders(i).name)==4 %folder is most likely a year here if it has length 4
