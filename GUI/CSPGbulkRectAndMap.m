@@ -35,6 +35,10 @@ else
             newfname = data.navigation.files(II(i)).name;
             newpname = data.navigation.paths(II(i)).name;
             I = imread(fullfile(newpname,newfname)); %Read image
+            if i== 1
+                ImSizeCheck = [size(I,1) size(I,2)]; %To check that all images are the same size
+            end
+            ImSize = [size(I,1) size(I,2)];
             fileparts = CSPparseFilename(newfname);
             rect_path = strrep(newpname,'Processed','Rectified');
             rect_path = strrep(rect_path,'Registered','Rectified'); %For images coming from registered folder
@@ -42,6 +46,9 @@ else
             rect_name = strrep(rect_name,'timex','plan'); %For timex images
             if exist(fullfile(rect_path,rect_name),'file')
                 disp('Rectification already detected...skipping this image')
+                continue
+            elseif (ImSize(1)~=ImSizeCheck(1))||(ImSize(2)~=ImSizeCheck(2))
+                disp(['Warning: wrong image size detected in image ' newfname '. Check your registered images'])
                 continue
             end
             
