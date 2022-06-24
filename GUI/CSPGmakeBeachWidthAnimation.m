@@ -158,5 +158,6 @@ for i = 2:navepochs %Loop over all images, not just images with shorelines
     bw_now = f(CSPepoch2LocalMatlab(navepochs(i),data.siteDB.timezone.gmt_offset));
     delete(bw_text)
     bw_text = text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(bw_now,'%0.1f') ' metres'],'fontsize',20,'color','r','fontname','Berlin Sans FB');  
-    print(fig,fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-djpeg','-r300')
+    %print(fig,fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-djpeg','-r300')
+    export_fig(fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-jpg','-r300')
 end
