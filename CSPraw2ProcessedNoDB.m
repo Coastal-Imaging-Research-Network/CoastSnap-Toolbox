@@ -29,16 +29,17 @@ for i = 1:length(images)
     if isfield(exif,'DateTime')
         time = datenum(exif.DateTime,'yyyy:mm:dd HH:MM:SS');
     else
-        I = imread(fullfile(imagedir,filename));
+        time = datenum(images(i).name(1:12),'yyyymmddHHMM'); %Default name from Spotteron Create Spot Package
+        %I = imread(fullfile(imagedir,filename));
         %h = figure;
         %image(I)
         %newtime = inputdlg('No image time found in image exif data. Please input a time (format dd/mm/yyyy HH:MM)','Image time',1,{'dd/mm/yyyy HH:MM'});
         %time = datenum(char(newtime),'dd/mm/yyyy HH:MM');
         %close(h)
-        time_ocr = ocr(I(1400:end,1380:end,:));
-        time = strrep(time_ocr.Text,' ',''); time = strrep(time,'O','0');
-        time = [time(1:10) ' ' time(11:18)];
-        time = datenum(time,'dd/mm/yyyy HH:MM');
+        %time_ocr = ocr(I(1400:end,1380:end,:));
+        %time = strrep(time_ocr.Text,' ',''); time = strrep(time,'O','0');
+        %time = [time(1:10) ' ' time(11:18)];
+        %time = datenum(time,'dd/mm/yyyy HH:MM');
     end
     
     %Get GMT Time
