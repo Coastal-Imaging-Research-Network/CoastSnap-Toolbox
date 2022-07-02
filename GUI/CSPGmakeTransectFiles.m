@@ -81,9 +81,18 @@ else
     SLtransects.alongshore_distances = marker_locs;
     
     %Save transect file?
-    button = questdlg('Do you want to save this transect file? Double-check that blue circles indicate seaward extents (otherwise there is a bug)','Save transect file?','Yes','No','No');
+    button = questdlg('Do you want to save this transect file? Double-check that blue circles indicate seaward extents. If they are the other way round, choose "Flip and save!"','Save transect file?','Yes','No','Flip and save!','No');
     switch button
         case 'Yes'
+            savefname = inputdlg('Please write filename of transect file. The standard convention for this filename is "SLtransects_(sitename)"','Transect file name');
+            save([transect_dir filesep savefname{1} '.mat'],'SLtransects')
+            msgbox(['Transect file saved!! There are ' num2str(size(X2ends,2)) ' transects in this transect file'])
+            disp('Transect file has been saved! Please make sure you update the database accordingly')
+        case 'Flip and save!'
+            X2ends = flipud(X2ends);
+            Y2ends = flipud(Y2ends);
+            plot(X2ends(1,:),Y2ends(1,:),'ro')
+            plot(X2ends(2,:),Y2ends(2,:),'bo')
             savefname = inputdlg('Please write filename of transect file. The standard convention for this filename is "SLtransects_(sitename)"','Transect file name');
             save([transect_dir filesep savefname{1} '.mat'],'SLtransects')
             msgbox(['Transect file saved!! There are ' num2str(size(X2ends,2)) ' transects in this transect file'])

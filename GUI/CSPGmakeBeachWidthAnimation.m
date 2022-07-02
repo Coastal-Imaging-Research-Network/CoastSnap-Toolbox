@@ -127,7 +127,11 @@ hor_mar3 = [width-hor_mar(2)-ax_width hor_mar(2)];
 geomplot(1,1,1,1,width,ax_height3,hor_mar3,ver_mar3,mid_mar)
 image(Ics)
 axis off
-print(fig,fullfile(output_path,'frame_001.jpg'),'-djpeg','-r300')
+if exist('exportgraphics','file')~=0
+    exportgraphics(fig,fullfile(output_path,'frame_001.jpg'),'Resolution',300) %Exportgraphics only from Matlab 2020 onwards
+else
+    print(fig,fullfile(output_path,'frame_001.jpg'),'-djpeg','-r300')
+end
 
 %Now loop over other images
 for i = 2:navepochs %Loop over all images, not just images with shorelines
@@ -158,6 +162,5 @@ for i = 2:navepochs %Loop over all images, not just images with shorelines
     bw_now = f(CSPepoch2LocalMatlab(navepochs(i),data.siteDB.timezone.gmt_offset));
     delete(bw_text)
     bw_text = text(XL(2)+0.1*diff(XL),YL(1)+0.45*diff(YL),[num2str(bw_now,'%0.1f') ' metres'],'fontsize',20,'color','r','fontname','Berlin Sans FB');  
-    %print(fig,fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-djpeg','-r300')
-    export_fig(fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-jpg','-r300')
+    print(fig,fullfile(output_path,['frame_' num2str(i,'%03.0f') '.jpg']),'-djpeg','-r300')
 end
