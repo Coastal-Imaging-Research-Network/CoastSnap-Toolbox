@@ -202,6 +202,10 @@ if go==1 %If hasn't been previously rectified
         imwrite(flipud(Iplan),fullfile(rect_path,rect_name))
         fname_rectified_mat = strrep(rect_name,'.jpg','.mat');
         save(fullfile(rect_path,fname_rectified_mat),'xgrid', 'ygrid', 'Iplan', 'metadata')
+        %Write world file
+        W = [siteDB.rect.res 0 0 -siteDB.rect.res min(xgrid)+siteDB.origin.eastings max(ygrid)+siteDB.origin.northings]'; %World file convention. Need to specify NW corner. 0 rotation as aligned N-S
+        fname_rectified_jpw = strrep(rect_name,'.jpg','.jpw');
+        save(fullfile(rect_path,fname_rectified_jpw),'W', '-ascii')
     end
         
     data.tide_level = tide_level;

@@ -20,6 +20,15 @@ else
             savefname = strrep(savefname,'timex','shoreline');
             savefname = strrep(savefname,'.jpg','.mat');
             save(fullfile(savedir,savefname),'sl')
+            
+            %Also save CSV file.
+            data = sl.UTM';
+            savefname = strrep(savefname,'.mat','.csv');
+            fid = fopen(fullfile(savedir,savefname),'w');
+            fprintf(fid,'%s\r\n','Eastings,Northings,Elevation')
+            fprintf(fid,'%0.2f,%0.2f,%0.2f\r\n',data)
+            fclose(fid)
+            
             disp('Shoreline saved to DB!')
     end
 end
