@@ -167,6 +167,23 @@ if go==1 %If hasn't been previously rectified
     
     plot(UV_computed(:,1),UV_computed(:,2),'ro');
     
+    %Plot remaining GCPs to check accuracy
+    not_gcp_list = find(~ismember([1:length(siteDB.gcp)],gcp_list)); %Indices of gcps not used
+    if ~isempty(not_gcp_list)
+        gcp_not = siteDB.gcp(not_gcp_list);
+        for i = 1:length(gcp_not)
+            gcp_not(i).x = gcp_not(i).eastings - inputs.X0;
+            gcp_not(i).y = gcp_not(i).northings - inputs.Y0;
+        end
+        xyz_not = [[gcp_not.x]' [gcp_not.y]' [gcp_not.z]'];
+        UV_computed_not = findUVnDOF(betas(1,:), xyz_not, globs);
+        UV_computed_not = reshape(UV_computed_not,[],2);
+        plot(UV_computed_not(:,1),UV_computed_not(:,2),'m+');
+        for i = 1:length(gcp_not)
+            text(UV_computed_not(i,1),UV_computed_not(i,2),gcp_not(i).name);
+        end
+    end
+    
     %% Rectify image
     images.xy = inputs.rectxy;
     images.z = inputs.rectz;
