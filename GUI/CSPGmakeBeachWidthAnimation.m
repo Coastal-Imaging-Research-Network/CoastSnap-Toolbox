@@ -116,7 +116,8 @@ ylim(YL)
 
 %Save beachwidth time-series data to csv file in output directory
 M = [datevec(dates) av_bw' f(dates)]; %8-column matrix of dates, alongshore-averaged beach width and smoothed beach width
-writematrix(M,fullfile(output_path,['beachwidth_timeseries_' data.site '.csv']))
+%writematrix(M,fullfile(output_path,['beachwidth_timeseries_' data.site '.csv']))
+csvwrite(fullfile(output_path,['beachwidth_timeseries_' data.site '.csv']),M);
 
 %Put coastsnap logo
 Ics = imread('CoastSnap Logo Portrait.png');
