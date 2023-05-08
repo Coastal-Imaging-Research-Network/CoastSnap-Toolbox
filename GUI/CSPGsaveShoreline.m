@@ -25,9 +25,9 @@ else
             data = sl.UTM';
             savefname = strrep(savefname,'.mat','.csv');
             fid = fopen(fullfile(savedir,savefname),'w');
-            fprintf(fid,'%s\r\n','Eastings,Northings,Elevation')
-            fprintf(fid,'%0.2f,%0.2f,%0.2f\r\n',data)
-            fclose(fid)
+            fprintf(fid,'%s\r\n','Eastings,Northings,Elevation');
+            fprintf(fid,'%0.2f,%0.2f,%0.2f\r\n',data);
+            fclose(fid);
             
             disp('Shoreline saved to DB!')
     end
