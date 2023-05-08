@@ -22,7 +22,7 @@ function varargout = CSP(varargin)
 
 % Edit the above text to modify the response to help CSP
 
-% Last Modified by GUIDE v2.5 26-Jan-2022 10:06:27
+% Last Modified by GUIDE v2.5 15-Apr-2023 12:15:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -300,7 +300,6 @@ function PlotShorelineChange_Callback(hObject, eventdata, handles)
 CSPGmakeShorelineChangePlot(handles)
 
 
-
 function previousshoreline_Callback(hObject, eventdata, handles)
 % hObject    handle to previousshoreline (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -413,3 +412,12 @@ function make_transect_files_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 CSPGmakeTransectFiles(handles)
+
+
+% --------------------------------------------------------------------
+function plotForecast_Callback(hObject, eventdata, handles)
+% hObject    handle to plotForecast (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+CSPGplotShorelineForecast(handles)
