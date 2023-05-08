@@ -38,8 +38,8 @@ imtimesLocal = imtimesGMT+siteDB.timezone.gmt_offset/24;
 %Get images coming from App not listed in DB
 
 [data1,txt1] = xlsread(exportfile);
-Iroot = find(data1(:,2)==rootID); %RootID is 2nd column in export file
-apptimes=datenum(char(txt1{Iroot+1,12}),'dd/mm/yyyy HH:MM:SS AM');
+Iroot = find(data1(:,2)==rootID); %RootID is 2nd column in export file. UPDATE It might be 1st column
+apptimes=datenum(char(txt1{Iroot+1,17}),'dd/mm/yyyy HH:MM:SS AM');
 
 dd = startdate:enddate;
 for i = 1:length(dd)
