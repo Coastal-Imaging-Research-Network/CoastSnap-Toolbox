@@ -22,11 +22,13 @@ For an indepth tutorial refer to the following video: https://www.youtube.com/wa
 
 ## Setting up a new CoastSnap station
 
-Setting up a new CoastSnap station requires two steps:
+Setting up a new CoastSnap station requires three steps:
 
 1.  In the **Images** directory, create a copy of **create_newsitename_here** and rename it to your sitename (e.g. *nthnarrabn*, *manly*).
 
-2.  In the **CoastSnapDB.xlsx** (found in the **Database** folder), create a new tab with the *exact* name as your sitename above. It is best to copy an existing tab like **manly** as the structure of this needs to be identical.
+3.  In the **Shorelines** directory, create a copy of **create_newsitename_here** and rename it to the same sitename in step 1 (e.g. *nthnarrabn*, *manly*).
+
+4.  In the **CoastSnapDB.xlsx** (found in the **Database** folder), create a new tab with the *exact* name as your sitename above. It is best to copy an existing tab like **manly** as the structure of this needs to be identical.
 
 ## Inserting relevant station metadata
 
